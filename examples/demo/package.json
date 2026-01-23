@@ -1,0 +1,21 @@
+{
+  "name": "wechatpay-demo-server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx server.ts",
+    "dev:watch": "tsx watch server.ts"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.14.2",
+    "better-wechatpay": "file:../..",
+    "dotenv": "^17.2.3",
+    "hono": "^4.6.14",
+    "qrcode": "^1.5.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.29",
+    "tsx": "^4.21.0"
+  }
+}

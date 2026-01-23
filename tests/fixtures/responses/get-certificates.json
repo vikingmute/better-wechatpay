@@ -1,0 +1,15 @@
+{
+  "data": [
+    {
+      "serial_no": "test_serial_no",
+      "effective_time": "2025-01-01T00:00:00+08:00",
+      "expire_time": "2030-01-01T00:00:00+08:00",
+      "encrypt_certificate": {
+        "algorithm": "AEAD_AES_256_GCM",
+        "nonce": "test_nonce",
+        "associated_data": "test_aad",
+        "ciphertext": "dGVzdF9jZXJ0aWZpY2F0ZV9kYXRh"
+      }
+    }
+  ]
+}

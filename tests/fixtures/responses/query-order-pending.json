@@ -1,0 +1,19 @@
+{
+  "mchid": "test_mch_id",
+  "appid": "test_app_id",
+  "out_trade_no": "order123",
+  "transaction_id": "",
+  "trade_type": "NATIVE",
+  "trade_state": "NOTPAY",
+  "trade_state_desc": "未支付",
+  "bank_type": "",
+  "payer": {
+    "openid": "test_openid"
+  },
+  "amount": {
+    "total": 100,
+    "payer_total": 0,
+    "currency": "CNY",
+    "payer_currency": "CNY"
+  }
+}

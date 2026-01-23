@@ -1,0 +1,1 @@
+export { NativePayment } from './native';

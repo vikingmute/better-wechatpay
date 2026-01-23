@@ -1,0 +1,20 @@
+{
+  "mchid": "test_mch_id",
+  "appid": "test_app_id",
+  "out_trade_no": "order123",
+  "transaction_id": "transaction123",
+  "trade_type": "NATIVE",
+  "trade_state": "SUCCESS",
+  "trade_state_desc": "支付成功",
+  "bank_type": "CMB_CREDIT",
+  "success_time": "2025-01-01T00:00:00+08:00",
+  "payer": {
+    "openid": "test_openid"
+  },
+  "amount": {
+    "total": 100,
+    "payer_total": 100,
+    "currency": "CNY",
+    "payer_currency": "CNY"
+  }
+}

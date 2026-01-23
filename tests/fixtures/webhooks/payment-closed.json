@@ -1,0 +1,14 @@
+{
+  "id": "test_id",
+  "create_time": "2025-01-01T00:00:00+08:00",
+  "resource_type": "encrypt-resource",
+  "event_type": "TRANSACTION.CLOSED",
+  "summary": "订单关闭",
+  "resource": {
+    "original_type": "transaction",
+    "algorithm": "AEAD_AES_256_GCM",
+    "ciphertext": "eyJvdXRfdHJhZGVfbm8iOiJvcmRlcjEyMyJ9",
+    "associated_data": "transaction",
+    "nonce": "test_nonce"
+  }
+}
