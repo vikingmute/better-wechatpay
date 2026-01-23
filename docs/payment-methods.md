@@ -1,6 +1,6 @@
 # 支付方式
 
-Better WeChat Pay SDK 支持微信支付的所有主要支付方式。
+Better WeChatPay SDK 支持微信支付的所有主要支付方式。
 
 ## 支付方式对比
 

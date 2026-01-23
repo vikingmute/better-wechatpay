@@ -1,6 +1,6 @@
 # 安全指南
 
-本指南介绍使用 Better WeChat Pay SDK 时的安全最佳实践。
+本指南介绍使用 Better WeChatPay SDK 时的安全最佳实践。
 
 ## 证书安全
 

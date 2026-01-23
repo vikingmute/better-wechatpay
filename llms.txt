@@ -1,0 +1,236 @@
+# Better WeChatPay
+
+> Modern WeChat Pay SDK for Node.js - ESM, TypeScript, Full Payment Methods
+
+## Quick Start
+
+```bash
+npm install better-wechatpay
+```
+
+```typescript
+import WeChatPay from 'better-wechatpay'
+
+const wechat = new WeChatPay({
+  config: {
+    appId: process.env.WECHAT_PAY_APP_ID,
+    mchId: process.env.WECHAT_PAY_MCH_ID,
+    apiKey: process.env.WECHAT_PAY_API_KEY,
+    privateKey: process.env.WECHAT_PAY_PRIVATE_KEY,
+    publicKey: process.env.WECHAT_PAY_PUBLIC_KEY,
+    notifyUrl: 'https://your-domain.com/webhook/wechat'
+  }
+})
+```
+
+## Payment Methods
+
+### Native Payment (QR Code)
+
+```typescript
+const payment = await wechat.native.create({
+  out_trade_no: 'order-123',
+  description: 'Premium Subscription',
+  amount: 99.00  // Amount in yuan, auto-converted to fen
+})
+// Returns: { code_url: 'weixin://...', out_trade_no: 'order-123' }
+```
+
+### APP Payment
+
+```typescript
+const payment = await wechat.app.create({
+  out_trade_no: 'order-123',
+  description: 'Premium Subscription',
+  amount: 99.00
+})
+// Returns: { prepay_id: '...', out_trade_no: 'order-123' }
+```
+
+### JSAPI / Mini Program Payment
+
+```typescript
+const payment = await wechat.jsapi.create({
+  out_trade_no: 'order-123',
+  description: 'Premium Subscription',
+  amount: 99.00,
+  openid: 'user_openid'  // Required
+})
+```
+
+### H5 Payment
+
+```typescript
+const payment = await wechat.h5.create({
+  out_trade_no: 'order-123',
+  description: 'Premium Subscription',
+  amount: 99.00,
+  payer_client_ip: '1.2.3.4',
+  h5_info: {
+    type: 'Wap',  // Required: Wap, iOS, Android
+    app_name: 'My App',
+    app_url: 'https://example.com'
+  }
+})
+// Returns: { h5_url: 'https://wx.tenpay.com/...', out_trade_no: 'order-123' }
+```
+
+## Common Operations
+
+All payment methods support these methods:
+
+### Query Order
+
+```typescript
+// By merchant order ID
+const order = await wechat.native.query({ out_trade_no: 'order-123' })
+
+// By WeChat transaction ID
+const order = await wechat.native.queryByTransactionId({ transaction_id: 'txn-123' })
+```
+
+### Close Order
+
+```typescript
+await wechat.native.close('order-123')
+```
+
+### Create Refund
+
+```typescript
+const refund = await wechat.native.refund({
+  out_trade_no: 'order-123',
+  out_refund_no: 'refund-123',
+  refund: 99.00,
+  total: 99.00,
+  reason: 'Product return'  // Optional
+})
+```
+
+### Query Refund
+
+```typescript
+const refund = await wechat.native.queryRefund({ out_refund_no: 'refund-123' })
+```
+
+### Download Bills
+
+```typescript
+// Trade bill
+const tradeBill = await wechat.native.applyTradeBill({
+  bill_date: '2025-01-01',
+  bill_type: 'ALL'  // ALL, SUCCESS, REFUND
+})
+
+// Fund flow bill
+const fundBill = await wechat.native.applyFundFlowBill({
+  bill_date: '2025-01-01',
+  account_type: 'BASIC'  // BASIC, OPERATION, FEES
+})
+```
+
+## Combine Payment
+
+```typescript
+// Native combine payment
+const payment = await wechat.native.createCombine({
+  combine_out_trade_no: 'combine-order-123',
+  sub_orders: [
+    {
+      mchid: '1900000001',
+      appid: 'wx1234567890',
+      out_trade_no: 'sub-order-1',
+      description: 'Sub order 1',
+      amount: { total_amount: 50.00 }
+    },
+    {
+      mchid: '1900000002',
+      appid: 'wx0987654321',
+      out_trade_no: 'sub-order-2',
+      description: 'Sub order 2',
+      amount: { total_amount: 49.00 }
+    }
+  ]
+})
+
+// Query combine order
+const order = await wechat.native.queryCombineOrder({
+  combine_out_trade_no: 'combine-order-123'
+})
+
+// Close combine order
+await wechat.native.closeCombineOrder({
+  combine_out_trade_no: 'combine-order-123',
+  sub_orders: [
+    { mchid: '1900000001', out_trade_no: 'sub-order-1' },
+    { mchid: '1900000002', out_trade_no: 'sub-order-2' }
+  ]
+})
+```
+
+## Webhook Handling
+
+```typescript
+const result = await wechat.webhook.verify({
+  headers: req.headers,
+  body: rawBody
+})
+
+if (result.success) {
+  console.log('Event type:', result.eventType)
+  console.log('Decrypted data:', result.decryptedData)
+}
+```
+
+## Custom API Calls
+
+```typescript
+const result = await wechat.request<CustomResponse>(
+  'POST',
+  '/v3/custom/endpoint',
+  { custom_param: 'value' }
+)
+```
+
+## Configuration Options
+
+```typescript
+interface WeChatPayConfig {
+  appId: string              // App ID
+  mchId: string              // Merchant ID
+  apiKey: string             // API key (32 chars)
+  privateKey: Buffer | string // Merchant private key (PEM)
+  publicKey: Buffer | string  // Merchant certificate (PEM)
+  paymentPublicKey?: Buffer | string  // WeChat Pay public key (optional)
+  publicKeyId?: string        // Public key ID
+  notifyUrl?: string          // Webhook URL
+  baseUrl?: string            // API base URL
+  debug?: boolean             // Debug mode
+}
+```
+
+## Parameter Naming Convention
+
+- **API parameters**: Use snake_case (matches WeChat Pay API)
+- **SDK config**: Use camelCase
+- **Amount unit**: Yuan (SDK auto-converts to fen)
+
+## Environment Variables
+
+```env
+WECHAT_PAY_APP_ID=wxYourAppID
+WECHAT_PAY_MCH_ID=1234567890
+WECHAT_PAY_API_KEY=your_32_character_api_key
+WECHAT_PAY_PRIVATE_KEY=-----BEGIN PRIVATE KEY-----...
+WECHAT_PAY_PUBLIC_KEY=-----BEGIN CERTIFICATE-----...
+WECHAT_PAY_PAYMENT_PUBLIC_KEY=-----BEGIN PUBLIC KEY-----...  # Optional
+WECHAT_PAY_PUBLIC_KEY_ID=public_key_serial  # Optional
+WECHAT_PAY_NOTIFY_URL=https://your-domain.com/webhook
+WECHAT_PAY_DEBUG=true  # Optional
+```
+
+## Links
+
+- Documentation: https://vikingmute.github.io/better-wechatpay
+- GitHub: https://github.com/vikingmute/better-wechatpay
+- NPM: https://www.npmjs.com/package/better-wechatpay

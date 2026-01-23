@@ -1,0 +1,42 @@
+/* 微信绿色主题 */
+:root {
+  --vp-c-brand-1: #07C160;
+  --vp-c-brand-2: #06ae56;
+  --vp-c-brand-3: #059c4d;
+  --vp-c-brand-soft: rgba(7, 193, 96, 0.14);
+  
+  --vp-button-brand-bg: #07C160;
+  --vp-button-brand-hover-bg: #06ae56;
+  --vp-button-brand-active-bg: #059c4d;
+}
+
+/* 暗黑模式 - 统一背景色与首页一致 */
+.dark {
+  --vp-c-brand-1: #07C160;
+  --vp-c-brand-2: #1ed96c;
+  --vp-c-brand-3: #35e87d;
+  --vp-c-brand-soft: rgba(7, 193, 96, 0.16);
+  
+  /* 统一背景色 */
+  --vp-c-bg: #0a0a0a;
+  --vp-c-bg-alt: #111111;
+  --vp-c-bg-elv: #111111;
+  --vp-c-bg-soft: #111111;
+  
+  /* 边框色 */
+  --vp-c-divider: #1f1f1f;
+  --vp-c-border: #1f1f1f;
+  --vp-c-gutter: #0a0a0a;
+  
+  /* 代码块背景 */
+  --vp-code-block-bg: #111111;
+  --vp-code-tab-bg: #0a0a0a;
+  --vp-code-copy-code-bg: #1a1a1a;
+  --vp-code-copy-code-hover-bg: #222222;
+  
+  /* 侧边栏 */
+  --vp-sidebar-bg-color: #0a0a0a;
+  
+  /* 导航栏 */
+  --vp-nav-bg-color: rgba(10, 10, 10, 0.8);
+}

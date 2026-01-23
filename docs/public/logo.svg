@@ -1,0 +1,23 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- 绿色圆形背景 -->
+  <circle cx="16" cy="16" r="16" fill="#07C160"/>
+  
+  <!-- 钞票堆叠效果 - 底层 (白色/浅色) -->
+  <rect x="7" y="14" width="18" height="10" rx="1.5" fill="#ffffff" opacity="0.3"/>
+  
+  <!-- 钞票堆叠效果 - 中层 -->
+  <rect x="7" y="12" width="18" height="10" rx="1.5" fill="#ffffff" opacity="0.5"/>
+  
+  <!-- 钞票堆叠效果 - 顶层 -->
+  <rect x="7" y="10" width="18" height="10" rx="1.5" fill="#ffffff"/>
+  
+  <!-- 钞票上的圆形装饰 -->
+  <circle cx="16" cy="15" r="3" fill="none" stroke="#07C160" stroke-width="1.2"/>
+  
+  <!-- 钞票上的 ¥ 符号 -->
+  <text x="16" y="17.5" font-family="Arial, sans-serif" font-size="6" font-weight="bold" fill="#07C160" text-anchor="middle">¥</text>
+  
+  <!-- 顶部装饰线条 -->
+  <line x1="9" y1="12" x2="12" y2="12" stroke="#07C160" stroke-width="1" stroke-linecap="round" opacity="0.6"/>
+  <line x1="20" y1="12" x2="23" y2="12" stroke="#07C160" stroke-width="1" stroke-linecap="round" opacity="0.6"/>
+</svg>

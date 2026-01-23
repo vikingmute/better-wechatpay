@@ -21,7 +21,10 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
   },
   "keywords": [
     "wechat",
@@ -38,9 +41,16 @@
     "ofetch": "^1.4.0"
   },
   "devDependencies": {
+    "@phosphor-icons/vue": "^2.2.1",
+    "@tailwindcss/postcss": "^4.1.18",
     "@types/node": "^20.12.0",
+    "autoprefixer": "^10.4.23",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.18",
     "tsx": "^4.21.0",
     "typescript": "^5.7.0",
+    "vite-tsconfig-paths": "^6.0.4",
+    "vitepress": "^1.6.4",
     "vitest": "^4.0.16"
   },
   "engines": {

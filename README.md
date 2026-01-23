@@ -1,4 +1,4 @@
-# Better WeChat Pay
+# Better WeChatPay
 
 现代化的微信支付 Node.js SDK - ESM、TypeScript、全支付方式支持
 
@@ -304,6 +304,8 @@ interface WeChatPayConfig {
 
 ## 文档
 
+在线文档：[https://better-wechatpay.vikingz.me](https://better-wechatpay.vikingz.me)
+
 ### 快速入门
 - [快速开始](docs/getting-started.md)
 - [API 参考](docs/api-reference.md)
@@ -317,6 +319,14 @@ interface WeChatPayConfig {
 - [JSAPI 支付](docs/jsapi-payment.md)
 - [H5 支付](docs/h5-payment.md)
 - [合单支付](docs/combine-payment.md)
+
+### 本地预览文档
+
+```bash
+npm run docs:dev    # 开发模式
+npm run docs:build  # 构建
+npm run docs:preview # 预览构建结果
+```
 
 ## 示例服务器
 

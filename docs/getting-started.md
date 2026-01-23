@@ -1,6 +1,6 @@
 # 快速开始
 
-本指南将帮助你在项目中设置和使用 Better WeChat Pay SDK。
+本指南将帮助你在项目中设置和使用 Better WeChatPay SDK。
 
 ## 前提条件
 

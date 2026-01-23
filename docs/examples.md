@@ -38,9 +38,9 @@ npm run dev
 ```
 
 **文档**：
-- [快速启动指南](./demo/QUICKSTART.md)
-- [完整文档](./demo/README.md)
-- [测试指南](./demo/TESTING_GUIDE.md)
+- [快速启动指南](https://github.com/vikingmute/better-wechatpay/tree/main/examples/demo/QUICKSTART.md)
+- [完整文档](https://github.com/vikingmute/better-wechatpay/tree/main/examples/demo/README.md)
+- [测试指南](https://github.com/vikingmute/better-wechatpay/tree/main/examples/demo/TESTING_GUIDE.md)
 
 ---
 
@@ -88,7 +88,7 @@ npm run dev
 - `GET /api/wechatpay/query/:id` - 查询订单
 - `POST /api/wechatpay/webhook` - 处理 Webhook
 
-**文档**：[Next.js 示例文档](./nextjs/README.md)
+**文档**：[Next.js 示例文档](https://github.com/vikingmute/better-wechatpay/tree/main/examples/nextjs/README.md)
 
 ---
 
@@ -137,7 +137,7 @@ npm run dev
 - `GET /api/wechatpay/query/:id` - 查询订单
 - `POST /api/wechatpay/webhook` - 处理 Webhook
 
-**文档**：[Nuxt 示例文档](./nuxt/README.md)
+**文档**：[Nuxt 示例文档](https://github.com/vikingmute/better-wechatpay/tree/main/examples/nuxt/README.md)
 
 ---
 
@@ -326,7 +326,7 @@ openssl base64 -in apiclient_key.pem | tr -d '\n'
 
 ## 相关资源
 
-- [Better WeChatPay SDK README](../README.md)
+- [Better WeChatPay SDK README](/)
 - [微信支付 API 文档](https://pay.weixin.qq.com/wiki/doc/apiv3/index.shtml)
 - [Next.js 文档](https://nextjs.org/docs)
 - [Nuxt 文档](https://nuxt.com/docs)
