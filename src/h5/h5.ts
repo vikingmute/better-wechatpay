@@ -1,4 +1,4 @@
-import type { HttpClient } from '../core/client';
+import type { HttpClient } from '../core/client.js';
 import type {
   CreateH5PaymentParams,
   CreateH5PaymentResult,
@@ -6,9 +6,9 @@ import type {
   CreateCombineH5PaymentParams,
   CreateCombineH5PaymentResult,
   CreateCombineH5PaymentAPIResponse
-} from '../types';
-import { BasePayment } from '../core/base-payment';
-import { logger } from '../core/debug';
+} from '../types/index.js';
+import { BasePayment } from '../core/base-payment.js';
+import { logger } from '../core/debug.js';
 
 /**
  * H5支付
@@ -66,7 +66,7 @@ export class H5Payment extends BasePayment {
           app_url: h5Info.app_url,
           bundle_id: h5Info.bundle_id,
           package_name: h5Info.package_name
-        }
+      }
       },
       settle_info: params.settle_info
     });

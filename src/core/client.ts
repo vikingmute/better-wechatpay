@@ -1,9 +1,9 @@
 import { ofetch } from 'ofetch';
 import crypto from 'crypto';
-import type { Signer } from './sign';
-import type { Verifier } from './verify';
-import type { WeChatPayConfig } from '../types/index';
-import { logger } from './debug';
+import type { Signer } from './sign.js';
+import type { Verifier } from './verify.js';
+import type { WeChatPayConfig } from '../types/index.js';
+import { logger } from './debug.js';
 
 export class HttpClient {
   constructor(

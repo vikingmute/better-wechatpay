@@ -1,1 +1,1 @@
-export { NativePayment } from './native';
+export { NativePayment } from './native.js';

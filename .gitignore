@@ -34,3 +34,6 @@ coverage/
 # Temporary files
 *.tmp
 temp/
+
+# VitePress cache
+docs/.vitepress/cache/

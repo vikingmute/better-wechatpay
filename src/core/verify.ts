@@ -1,6 +1,6 @@
 import { createVerify } from 'crypto';
 import { X509Certificate } from '@peculiar/x509';
-import type { WeChatPayConfig } from '../types/index';
+import type { WeChatPayConfig } from '../types/index.js';
 
 export class Verifier {
   private publicKey: Buffer;

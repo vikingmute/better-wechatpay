@@ -1,17 +1,17 @@
-import type { WeChatPayConfig, WeChatPayOptions } from './types/config';
-import { loadConfig } from './config/loader';
-import { setDebugEnabled } from './core/debug';
-import { Signer } from './core/sign';
-import { Verifier } from './core/verify';
-import { CryptoUtils } from './core/crypto';
-import { CertificateManager } from './core/cert-manager';
-import { HttpClient } from './core/client';
-import { NativePayment } from './native/native';
-import { JSAPIPayment } from './jsapi/jsapi';
-import { AppPayment } from './app/app';
-import { H5Payment } from './h5/h5';
-import { Webhook } from './webhook/webhook';
-import type { CertificateAPIResponse } from './types/api';
+import type { WeChatPayConfig, WeChatPayOptions } from './types/config.js';
+import { loadConfig } from './config/loader.js';
+import { setDebugEnabled } from './core/debug.js';
+import { Signer } from './core/sign.js';
+import { Verifier } from './core/verify.js';
+import { CryptoUtils } from './core/crypto.js';
+import { CertificateManager } from './core/cert-manager.js';
+import { HttpClient } from './core/client.js';
+import { NativePayment } from './native/native.js';
+import { JSAPIPayment } from './jsapi/jsapi.js';
+import { AppPayment } from './app/app.js';
+import { H5Payment } from './h5/h5.js';
+import { Webhook } from './webhook/webhook.js';
+import type { CertificateAPIResponse } from './types/api.js';
 
 export class WeChatPay {
   public readonly config: any;
@@ -82,7 +82,7 @@ export class WeChatPay {
   }
 }
 
-export * from './types/config';
-export * from './types/payment';
-export * from './types/webhook';
+export * from './types/config.js';
+export * from './types/payment.js';
+export * from './types/webhook.js';
 export default WeChatPay;

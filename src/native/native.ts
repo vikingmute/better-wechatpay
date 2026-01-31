@@ -1,13 +1,13 @@
-import type { HttpClient } from '../core/client';
+import type { HttpClient } from '../core/client.js';
 import type {
   CreateNativePaymentParams,
   CreateNativePaymentResult,
   CreateCombineNativePaymentParams,
   CreateCombineNativePaymentResult,
   CreateCombineNativePaymentAPIResponse
-} from '../types';
-import { BasePayment } from '../core/base-payment';
-import { logger } from '../core/debug';
+} from '../types/index.js';
+import { BasePayment } from '../core/base-payment.js';
+import { logger } from '../core/debug.js';
 
 /**
  * Native支付（扫码支付）
@@ -88,7 +88,7 @@ export class NativePayment extends BasePayment {
         attach: order.attach,
         out_trade_no: order.out_trade_no,
         description: order.description,
-        amount: {
+      amount: {
           total_amount: this.formatAmount(order.amount.total_amount),
           currency: order.amount.currency || 'CNY'
         },

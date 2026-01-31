@@ -3,6 +3,25 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-01-01',
   devtools: { enabled: true },
 
+  modules: ['@nuxtjs/tailwindcss'],
+
+  css: ['~/assets/css/main.css'],
+
+  // 处理 better-wechatpay 的 ESM 模块解析
+  nitro: {
+    esbuild: {
+      options: {
+        target: 'esnext',
+      },
+    },
+  },
+
+  vite: {
+    optimizeDeps: {
+      include: ['better-wechatpay'],
+    },
+  },
+
   runtimeConfig: {
     wechatPay: {
       appId: process.env.WECHAT_PAY_APP_ID,

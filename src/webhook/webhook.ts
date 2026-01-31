@@ -1,11 +1,11 @@
-import type { Verifier } from '../core/verify';
-import type { CryptoUtils } from '../core/crypto';
+import type { Verifier } from '../core/verify.js';
+import type { CryptoUtils } from '../core/crypto.js';
 import type {
   WebhookParams,
   WebhookVerificationResult,
   WebhookNotification
-} from '../types/index';
-import { logger } from '../core/debug';
+} from '../types/index.js';
+import { logger } from '../core/debug.js';
 
 export class Webhook {
   constructor(

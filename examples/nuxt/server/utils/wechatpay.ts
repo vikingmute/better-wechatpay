@@ -7,16 +7,20 @@ export function getWeChatPayClient(): WeChatPay {
     return wechatPayInstance;
   }
 
+  const runtimeConfig = useRuntimeConfig();
+  const port = process.env.PORT || '3000';
+  const defaultNotifyUrl = `http://localhost:${port}/api/wechatpay/webhook`;
+  
   const config: WeChatPayConfig = {
-    appId: useRuntimeConfig().wechatPay.appId,
-    mchId: useRuntimeConfig().wechatPay.mchId,
-    apiKey: useRuntimeConfig().wechatPay.apiKey,
-    privateKey: useRuntimeConfig().wechatPay.privateKey,
-    publicKey: useRuntimeConfig().wechatPay.publicKey,
-    paymentPublicKey: useRuntimeConfig().wechatPay.paymentPublicKey,
-    publicKeyId: useRuntimeConfig().wechatPay.publicKeyId,
-    notifyUrl: useRuntimeConfig().wechatPay.notifyUrl,
-    debug: useRuntimeConfig().wechatPay.debug,
+    appId: runtimeConfig.wechatPay.appId,
+    mchId: runtimeConfig.wechatPay.mchId,
+    apiKey: runtimeConfig.wechatPay.apiKey,
+    privateKey: runtimeConfig.wechatPay.privateKey,
+    publicKey: runtimeConfig.wechatPay.publicKey,
+    paymentPublicKey: runtimeConfig.wechatPay.paymentPublicKey,
+    publicKeyId: runtimeConfig.wechatPay.publicKeyId,
+    notifyUrl: runtimeConfig.wechatPay.notifyUrl || defaultNotifyUrl,
+    debug: runtimeConfig.wechatPay.debug,
   };
 
   if (!config.appId || !config.mchId || !config.apiKey || !config.privateKey || !config.publicKey) {

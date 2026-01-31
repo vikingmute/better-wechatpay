@@ -10,10 +10,13 @@
     "preview": "nuxt preview"
   },
   "dependencies": {
-    "better-wechatpay": "file:../..",
-    "nuxt": "^3.16.0"
+    "@types/qrcode": "^1.5.6",
+    "better-wechatpay": "^1.0.1",
+    "nuxt": "^3.16.0",
+    "qrcode": "^1.5.4"
   },
   "devDependencies": {
+    "@nuxtjs/tailwindcss": "^6.14.0",
     "@types/node": "^20.0.0",
     "typescript": "^5.0.0"
   }

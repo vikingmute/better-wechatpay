@@ -7,6 +7,9 @@ export function getWeChatPayClient(): WeChatPay {
     return wechatPayInstance;
   }
 
+  const port = process.env.PORT || '3000';
+  const defaultNotifyUrl = `http://localhost:${port}/api/wechatpay/webhook`;
+  
   const config: WeChatPayConfig = {
     appId: process.env.WECHAT_PAY_APP_ID!,
     mchId: process.env.WECHAT_PAY_MCH_ID!,
@@ -15,7 +18,7 @@ export function getWeChatPayClient(): WeChatPay {
     publicKey: process.env.WECHAT_PAY_PUBLIC_KEY!,
     paymentPublicKey: process.env.WECHAT_PAY_PAYMENT_PUBLIC_KEY,
     publicKeyId: process.env.WECHAT_PAY_PUBLIC_KEY_ID,
-    notifyUrl: process.env.WECHAT_PAY_NOTIFY_URL,
+    notifyUrl: process.env.WECHAT_PAY_NOTIFY_URL || defaultNotifyUrl,
     debug: process.env.WECHAT_PAY_DEBUG === 'true',
   };
 

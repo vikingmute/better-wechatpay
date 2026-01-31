@@ -1,4 +1,4 @@
-import type { HttpClient } from '../core/client';
+import type { HttpClient } from '../core/client.js';
 import type {
   CreateJSAPIPaymentParams,
   CreateJSAPIPaymentResult,
@@ -9,9 +9,9 @@ import type {
   CreateCombineMiniProgramPaymentParams,
   CreateCombineMiniProgramPaymentResult,
   CreateCombineMiniProgramPaymentAPIResponse
-} from '../types';
-import { BasePayment } from '../core/base-payment';
-import { logger } from '../core/debug';
+} from '../types/index.js';
+import { BasePayment } from '../core/base-payment.js';
+import { logger } from '../core/debug.js';
 
 /**
  * JSAPI支付 / 小程序支付

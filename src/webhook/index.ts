@@ -1,1 +1,1 @@
-export { Webhook } from './webhook';
+export { Webhook } from './webhook.js';

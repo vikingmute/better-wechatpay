@@ -1,8 +1,8 @@
-import type { Verifier } from './verify';
-import type { CryptoUtils } from './crypto';
-import type { CertificateAPIResponse } from '../types/index';
-import type { WeChatPayConfig } from '../types/index';
-import { logger } from './debug';
+import type { Verifier } from './verify.js';
+import type { CryptoUtils } from './crypto.js';
+import type { CertificateAPIResponse } from '../types/index.js';
+import type { WeChatPayConfig } from '../types/index.js';
+import { logger } from './debug.js';
 
 export class CertificateManager {
   constructor(

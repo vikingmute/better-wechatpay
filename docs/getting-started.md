@@ -2,6 +2,8 @@
 
 本指南将帮助你在项目中设置和使用 Better WeChatPay SDK。
 
+> 📚 **想了解原理？** 如果你对微信支付的证书、签名、验签机制感兴趣，可以先阅读 [微信支付原理详解](/how-wechatpay-works)。
+
 ## 前提条件
 
 - Node.js 18+
@@ -17,30 +19,32 @@ npm install better-wechatpay
 ## 第一步：获取微信支付凭证
 
 1. 登录 [微信支付商户平台](https://pay.weixin.qq.com/)
-2. 进入：账户中心 > API 安全
-3. 获取以下信息：
+2. 获取以下信息：
 
-   - **AppID**：你的应用 ID
-   - **MchID**：你的商户号
-   - **API 密钥**：API v3 密钥（32 位字符）
+   - **AppID**：产品中心 → **APPID账号管理** → **我关联的APPID账号**
+   - **MchID**：帐户中心 → **商户信息**
+   - **API 密钥**：账户中心 → **API 安全** → **API 密钥**（32 位字符）
 
-4. 获取证书：
-   - **商户 API 证书**：从 API 安全页面下载
+3. 获取证书：
+   - **商户 API 证书**：账户中心 → **API 安全** → **商户 API 证书** 下载
    - **商户 API 私钥**：与证书一起生成
-   - **微信支付公钥**（可选但推荐）：从 API 安全页面获取
+   - **微信支付公钥**（可选但推荐）：账户中心 → **API 安全** → **微信支付公钥** 获取
+   - **微信支付公钥 ID**（可选但推荐）：账户中心 → **API 安全** → **微信支付公钥** 获取
 
 ## 第二步：准备证书
 
-将 PEM 证书转换为单行格式：
+PEM 证书**不需要强制转换为单行**。如果你的环境变量支持多行（例如本地 `.env` 文件），可以直接拷贝证书内容。
+
+只有在**环境变量不支持多行**（例如某些 CI/CD 面板、容器平台）时，才需要把换行转成 `\n`：
 
 ```bash
-# 将私钥转换为单行
+# 将私钥转换为单行（可选）
 awk '{printf "%s\\n", $0}' apiclient_key.pem
 
-# 将公钥（商户证书）转换为单行
+# 将公钥（商户证书）转换为单行（可选）
 awk '{printf "%s\\n", $0}' apiclient_cert.pem
 
-# 将微信支付公钥转换为单行（如果使用新验证方式）
+# 将微信支付公钥转换为单行（可选）
 awk '{printf "%s\\n", $0}' wechatpay_pub_key.pem
 ```
 
@@ -54,7 +58,7 @@ WECHAT_PAY_APP_ID="wx1234567890abcdef"
 WECHAT_PAY_MCH_ID="1234567890"
 WECHAT_PAY_API_KEY="your32characterapikey123456789"
 
-# 证书（PEM 格式，单行）
+# 证书（PEM 格式，多行/单行均可）
 WECHAT_PAY_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----
 MIIEvQIBADANBgkq...
 -----END PRIVATE KEY-----"
@@ -63,12 +67,15 @@ WECHAT_PAY_PUBLIC_KEY="-----BEGIN CERTIFICATE-----
 MIID8zCCAtugAwIB...
 -----END CERTIFICATE-----"
 
-# 可选：微信支付公钥（推荐）
+# 可选但推荐：微信支付公钥（用于验签，无有效期限制）
+# 从商户平台获取：账户中心 → API安全 → 微信支付公钥
 WECHAT_PAY_PAYMENT_PUBLIC_KEY="-----BEGIN PUBLIC KEY-----
 MIIEvgIBADAN...
 -----END PUBLIC KEY-----"
 
-WECHAT_PAY_PUBLIC_KEY_ID="serial_number_from_wechat"
+# 公钥 ID（从商户平台下载公钥时显示，两个必须配对使用）
+# 格式如：PUB_KEY_ID_0000000000000024101100397200000006
+WECHAT_PAY_PUBLIC_KEY_ID="PUB_KEY_ID_xxxx"
 
 # 调试模式（可选）
 WECHAT_PAY_DEBUG="true"
@@ -86,8 +93,11 @@ const wechat = new WeChatPay({
     apiKey: process.env.WECHAT_PAY_API_KEY!,
     privateKey: process.env.WECHAT_PAY_PRIVATE_KEY!,
     publicKey: process.env.WECHAT_PAY_PUBLIC_KEY!,
-    notifyUrl: 'https://your-domain.com/webhook/wechat',
-    debug: process.env.WECHAT_PAY_DEBUG === 'true'
+    notifyUrl: 'https://your-domain.com/webhook/wechat', // 本地开发参考：/local-tunnel
+    debug: process.env.WECHAT_PAY_DEBUG === 'true',
+    // 可选但推荐：微信支付公钥验签（无有效期限制）
+    paymentPublicKey: process.env.WECHAT_PAY_PAYMENT_PUBLIC_KEY,
+    publicKeyId: process.env.WECHAT_PAY_PUBLIC_KEY_ID,
   }
 });
 ```
@@ -118,6 +128,8 @@ async function createPayment() {
 ## 第六步：设置 Webhook 处理器
 
 创建一个 webhook 端点来接收支付通知：
+
+> 💡 **本地开发提示**：微信支付回调需要公网可访问的 URL。如果你在本地开发，需要使用内网穿透工具。详见 [本地开发指南](/local-tunnel)。
 
 ```typescript
 import { createServer } from 'http';

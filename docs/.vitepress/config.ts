@@ -11,6 +11,12 @@ export default defineConfig({
     ['meta', { name: 'theme-color', content: '#07C160' }],
   ],
 
+  markdown: {
+    languageAlias: {
+      env: 'bash'
+    }
+  },
+
   themeConfig: {
     logo: '/logo.svg',
     
@@ -33,9 +39,8 @@ export default defineConfig({
         text: '开始使用',
         items: [
           { text: '快速开始', link: '/getting-started' },
+          { text: '本地开发（内网穿透）', link: '/local-tunnel' },
           { text: '调试模式', link: '/debug-mode' },
-          { text: '安全指南', link: '/security' },
-          { text: '错误码', link: '/error-codes' },
         ]
       },
       {
@@ -59,6 +64,9 @@ export default defineConfig({
         items: [
           { text: 'API 参考', link: '/api-reference' },
           { text: '支付方式总览', link: '/payment-methods' },
+          { text: '微信支付原理', link: '/how-wechatpay-works' },
+          { text: '错误码', link: '/error-codes' },
+          { text: '安全指南', link: '/security' },
           { text: 'LLMs.txt', link: '/llms.txt' },
         ]
       }

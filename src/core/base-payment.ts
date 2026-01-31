@@ -1,4 +1,4 @@
-import type { HttpClient } from './client';
+import type { HttpClient } from './client.js';
 import type {
   QueryOrderParams,
   QueryOrderResult,
@@ -14,8 +14,8 @@ import type {
   ApplyTradeBillParams,
   BillResult,
   ApplyFundFlowBillParams
-} from '../types';
-import { logger } from './debug';
+} from '../types/index.js';
+import { logger } from './debug.js';
 
 /**
  * 支付基类

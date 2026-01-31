@@ -3,10 +3,10 @@ import { getWeChatPayClient } from '../../../../../lib/wechatpay';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id: out_trade_no } = params;
+    const { id: out_trade_no } = await params;
 
     if (!out_trade_no) {
       return NextResponse.json(
@@ -16,12 +16,8 @@ export async function GET(
     }
 
     const wechatPay = getWeChatPayClient();
-    const { searchParams } = new URL(request.url);
-    const mchid = searchParams.get('mchid');
-
     const order = await wechatPay.native.query({
       out_trade_no,
-      mchid: mchid || undefined,
     });
 
     return NextResponse.json({

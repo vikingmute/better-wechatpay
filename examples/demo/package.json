@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@hono/node-server": "^1.14.2",
-    "better-wechatpay": "file:../..",
+    "better-wechatpay": "^1.0.1",
     "dotenv": "^17.2.3",
     "hono": "^4.6.14",
     "qrcode": "^1.5.4"

@@ -18,6 +18,9 @@ const wechat = new WeChatPay({
     apiKey: process.env.WECHAT_PAY_API_KEY,
     privateKey: process.env.WECHAT_PAY_PRIVATE_KEY,
     publicKey: process.env.WECHAT_PAY_PUBLIC_KEY,
+    // Optional but recommended: WeChat Pay public key verification
+    paymentPublicKey: process.env.WECHAT_PAY_PAYMENT_PUBLIC_KEY,
+    publicKeyId: process.env.WECHAT_PAY_PUBLIC_KEY_ID,
     notifyUrl: 'https://your-domain.com/webhook/wechat'
   }
 })

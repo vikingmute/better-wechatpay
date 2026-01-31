@@ -1,28 +1,18 @@
+<div align="center">
+
 # Better WeChatPay
 
-现代化的微信支付 Node.js SDK - ESM、TypeScript、全支付方式支持
+**现代化的微信支付 Node.js SDK**
 
-## 目录
+ESM、TypeScript、全支付方式支持
 
-- [特性](#特性)
-- [安装](#安装)
-- [快速开始](#快速开始)
-- [环境变量](#环境变量)
-- [支付方式](#支付方式)
-  - [Native 支付（扫码支付）](#native-支付扫码支付)
-  - [APP 支付](#app-支付)
-  - [JSAPI / 小程序支付](#jsapi--小程序支付)
-  - [H5 支付](#h5-支付)
-  - [合单支付](#合单支付)
-- [订单管理](#订单管理)
-- [退款管理](#退款管理)
-- [账单下载](#账单下载)
-- [Webhook 处理](#webhook-处理)
-- [自定义 API 调用](#自定义-api-调用)
-- [调试模式](#调试模式)
-- [示例服务器](#示例服务器)
-- [框架集成](#框架集成)
-- [文档](#文档)
+[![npm version](https://img.shields.io/npm/v/better-wechatpay.svg)](https://www.npmjs.com/package/better-wechatpay)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+![Build Status](https://github.com/vikingmute/better-wechatpay/actions/workflows/ci.yml/badge.svg)
+
+[**在线文档**](https://better-wechatpay.vikingz.me)
+
+</div>
 
 ## 特性
 
@@ -55,6 +45,9 @@ const wechat = new WeChatPay({
     apiKey: process.env.WECHAT_PAY_API_KEY,
     privateKey: process.env.WECHAT_PAY_PRIVATE_KEY,
     publicKey: process.env.WECHAT_PAY_PUBLIC_KEY,
+    // 可选但推荐：微信支付公钥验签（无有效期限制）
+    paymentPublicKey: process.env.WECHAT_PAY_PAYMENT_PUBLIC_KEY,
+    publicKeyId: process.env.WECHAT_PAY_PUBLIC_KEY_ID,
     notifyUrl: 'https://your-domain.com/webhook/wechat'
   }
 });
@@ -79,7 +72,7 @@ WECHAT_PAY_APP_ID="your_app_id"
 WECHAT_PAY_MCH_ID="your_mch_id"
 WECHAT_PAY_API_KEY="32_character_api_key"
 
-# 证书（PEM 格式，单行）
+# 证书（PEM 格式，多行/单行均可）
 WECHAT_PAY_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----
 MIIEvQIBADANBgkq...
 -----END PRIVATE KEY-----"
@@ -88,12 +81,16 @@ WECHAT_PAY_PUBLIC_KEY="-----BEGIN CERTIFICATE-----
 MIID8zCCAtugAwIB...
 -----END CERTIFICATE-----"
 
-# 可选：微信支付公钥（推荐）
+# 可选但推荐：微信支付公钥（用于验签，无有效期限制）
+# 获取位置：商户平台 → 账户中心 → API安全 → 微信支付公钥
 WECHAT_PAY_PAYMENT_PUBLIC_KEY="-----BEGIN PUBLIC KEY-----
 MIIEvgIBADAN...
 -----END PUBLIC KEY-----"
 
-WECHAT_PAY_PUBLIC_KEY_ID="public_key_id"
+# 公钥 ID（下载公钥时显示，必须与公钥配对使用）
+# 获取位置：商户平台 → 账户中心 → API安全 → 微信支付公钥
+# 格式如：PUB_KEY_ID_0000000000000024101100397200000006
+WECHAT_PAY_PUBLIC_KEY_ID="PUB_KEY_ID_xxxx"
 ```
 
 ## 支付方式
@@ -149,158 +146,6 @@ const payment = await wechat.h5.create({
 // 返回: { h5_url: 'https://wx.tenpay.com/...', out_trade_no: 'order-123' }
 ```
 
-## 通用操作
-
-所有支付方式都支持以下操作：
-
-### 查询订单
-
-```typescript
-// 通过商户订单号查询
-const order = await wechat.native.query({ out_trade_no: 'order-123' });
-
-// 通过微信订单号查询
-const order = await wechat.native.queryByTransactionId({ transaction_id: 'txn-123' });
-
-console.log('订单状态:', order.trade_state);
-console.log('微信订单号:', order.transaction_id);
-console.log('金额:', order.amount.total);
-```
-
-### 关闭订单
-
-```typescript
-await wechat.native.close('order-123');
-```
-
-### 申请退款
-
-```typescript
-const refund = await wechat.native.refund({
-  out_trade_no: 'order-123',
-  out_refund_no: 'refund-123',
-  refund: 99.00,
-  total: 99.00,
-  reason: '商品售后'
-});
-```
-
-### 查询退款
-
-```typescript
-const refund = await wechat.native.queryRefund({ out_refund_no: 'refund-123' });
-```
-
-### 申请账单
-
-```typescript
-// 交易账单
-const tradeBill = await wechat.native.applyTradeBill({
-  bill_date: '2025-01-01',
-  bill_type: 'ALL'
-});
-
-// 资金账单
-const fundBill = await wechat.native.applyFundFlowBill({
-  bill_date: '2025-01-01',
-  account_type: 'BASIC'
-});
-```
-
-## 自定义 API 调用
-
-SDK 暴露了底层 HTTP 客户端，可用于调用未实现的微信支付 API：
-
-```typescript
-const result = await wechat.request<CustomResponse>(
-  'POST',
-  '/v3/custom/endpoint',
-  { custom_param: 'value' }
-);
-```
-
-这对于调用新推出的微信支付 API 或特殊业务场景非常有用。
-
-## Webhook 处理
-
-```typescript
-import { createServer } from 'http';
-
-const server = createServer(async (req, res) => {
-  if (req.url === '/webhook/wechat') {
-    let body = '';
-    req.on('data', chunk => body += chunk);
-    req.on('end', async () => {
-      const result = await wechat.webhook.verify({
-        headers: req.headers as any,
-        body
-      });
-
-      if (result.success) {
-        console.log('Webhook 验证成功:', result.eventType);
-        console.log('解密数据:', result.decryptedData);
-        res.writeHead(200);
-        res.end('OK');
-      } else {
-        console.error('Webhook 签名无效');
-        res.writeHead(400);
-        res.end('Invalid signature');
-      }
-    });
-  }
-});
-
-server.listen(3000);
-```
-
-## 调试模式
-
-启用调试日志：
-
-```typescript
-const wechat = new WeChatPay({
-  config: {
-    /* ... 配置 ... */
-    debug: true
-  }
-});
-
-// 或通过环境变量
-WECHAT_PAY_DEBUG=true node app.js
-```
-
-调试输出包含：
-- 请求详情（URL、方法、请求头、请求体）
-- 响应详情（状态码、响应头、响应体）
-- 签名验证结果
-- 错误详情
-
-## 配置选项
-
-```typescript
-interface WeChatPayConfig {
-  appId: string;              // 应用 ID
-  mchId: string;              // 商户号
-  apiKey: string;             // API 密钥（32位）
-  privateKey: Buffer | string; // 商户私钥
-  publicKey: Buffer | string;  // 商户证书
-  paymentPublicKey?: Buffer | string;  // 微信支付公钥（可选，推荐）
-  publicKeyId?: string;        // 公钥 ID（使用 paymentPublicKey 时必填）
-  notifyUrl?: string;          // 回调通知地址
-  baseUrl?: string;            // API 基础 URL（默认生产环境）
-  debug?: boolean;             // 调试模式
-}
-```
-
-## 安全注意事项
-
-1. **永远不要将证书或密钥提交到版本控制**
-2. **将敏感凭证存储在环境变量中**
-3. **始终验证 Webhook 签名**
-4. **Webhook URL 必须使用 HTTPS**
-5. **定期轮换证书**
-
-详见 [安全指南](docs/security.md)。
 
 ## 文档
 

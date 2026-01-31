@@ -1,5 +1,5 @@
 import { createDecipheriv } from 'crypto';
-import type { WeChatPayConfig } from '../types/index';
+import type { WeChatPayConfig } from '../types/index.js';
 
 export class CryptoUtils {
   constructor(private config: WeChatPayConfig) {}

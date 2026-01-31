@@ -6,8 +6,8 @@ export default defineEventHandler(async (event) => {
     const wechatPay = getWeChatPayClient();
 
     const result = await wechatPay.webhook.verify({
-      headers: getHeaders(event),
-      body,
+      headers: getHeaders(event) as any,
+      body: body || '',
     });
 
     if (!result.success) {

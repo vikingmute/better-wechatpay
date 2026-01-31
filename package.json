@@ -1,6 +1,6 @@
 {
   "name": "better-wechatpay",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Modern WeChat Pay SDK for Node.js - ESM, TypeScript, Native Payments",
   "type": "module",
   "main": "./dist/index.js",

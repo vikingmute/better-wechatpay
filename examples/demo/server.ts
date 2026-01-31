@@ -109,7 +109,7 @@ const renderBase = (content: string, title = 'WeChat Pay Demo Server') => `
       transition: background-color 0.2s;
     }
     .btn-secondary:hover { background-color: color-mix(in srgb, var(--secondary) 80%, transparent); }
-    
+
     .btn-destructive {
       display: inline-flex;
       align-items: center;
@@ -159,7 +159,7 @@ const renderIndex = (ordersList: Order[], refundsList: Refund[]) => {
   const ordersHtml = ordersList.length === 0
     ? '<div class="text-center py-8"><p class="text-muted-foreground">暂无订单</p></div>'
     : `
-      <div class="overflow-x-auto">
+        <div class="overflow-x-auto">
         <table class="w-full text-sm">
           <thead>
             <tr class="border-b">
@@ -169,10 +169,10 @@ const renderIndex = (ordersList: Order[], refundsList: Refund[]) => {
               <th class="h-10 px-4 text-left font-medium text-muted-foreground">状态</th>
               <th class="h-10 px-4 text-left font-medium text-muted-foreground">交易号</th>
               <th class="h-10 px-4 text-left font-medium text-muted-foreground">操作</th>
-            </tr>
-          </thead>
+              </tr>
+            </thead>
           <tbody>
-            ${ordersList.map(order => `
+              ${ordersList.map(order => `
               <tr class="border-b hover:bg-muted/50">
                 <td class="p-4 font-mono text-xs">${order.id}</td>
                 <td class="p-4">${order.description}</td>
@@ -185,20 +185,20 @@ const renderIndex = (ordersList: Order[], refundsList: Refund[]) => {
                     order.status === 'failed' ? 'bg-red-100 text-red-800' :
                     'bg-slate-100 text-slate-800'
                   }">${order.status.toUpperCase()}</span>
-                </td>
+                  </td>
                 <td class="p-4 font-mono text-xs">${order.transaction_id || '-'}</td>
                 <td class="p-4">
-                  <div class="flex items-center gap-2">
+                    <div class="flex items-center gap-2">
                     <a href="/order/${order.id}" class="btn-primary text-xs">查看</a>
                     ${order.status === 'pending' ? `<button onclick="closeOrder('${order.id}')" class="btn-destructive text-xs">关闭</button>` : ''}
                     ${order.status === 'paid' ? `<button onclick="openRefundModal('${order.id}', ${order.amount})" class="btn-secondary text-xs">退款</button>` : ''}
-                  </div>
-                </td>
-              </tr>
-            `).join('')}
-          </tbody>
-        </table>
-      </div>
+                    </div>
+                  </td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
     `;
 
   const refundsHtml = refundsList.length === 0
@@ -311,7 +311,7 @@ const renderIndex = (ordersList: Order[], refundsList: Refund[]) => {
             </div>
             <button onclick="downloadTradeBill()" class="btn-primary">获取账单链接</button>
           </div>
-          
+
           <div class="space-y-4">
             <h3 class="font-medium">资金账单 (Fund Flow Bill)</h3>
             <div>
@@ -382,7 +382,7 @@ const renderIndex = (ordersList: Order[], refundsList: Refund[]) => {
         <div id="api-result" class="mt-6 hidden">
           <h3 class="font-medium mb-2">API 响应</h3>
           <pre id="api-result-content"></pre>
-        </div>
+      </div>
       </div>
     </div>
 
@@ -404,7 +404,7 @@ const renderIndex = (ordersList: Order[], refundsList: Refund[]) => {
           <div class="flex gap-4">
             <button onclick="submitRefund()" class="btn-primary flex-1">确认退款</button>
             <button onclick="closeRefundModal()" class="btn-secondary flex-1">取消</button>
-          </div>
+      </div>
         </div>
       </div>
     </div>
@@ -433,7 +433,7 @@ const renderIndex = (ordersList: Order[], refundsList: Refund[]) => {
 
       async function closeOrder(orderId) {
         if (!confirm('确定要关闭这个订单吗？')) return;
-        try {
+          try {
           const res = await fetch('/api/close/' + orderId, { method: 'POST' });
           if (res.ok) window.location.reload();
           else alert('关闭订单失败: ' + (await res.json()).error);
@@ -469,10 +469,10 @@ const renderIndex = (ordersList: Order[], refundsList: Refund[]) => {
           const data = await res.json();
           if (res.ok) {
             alert('退款申请成功！退款单号: ' + data.out_refund_no);
-            window.location.reload();
-          } else {
+              window.location.reload();
+            } else {
             alert('退款失败: ' + data.error);
-          }
+            }
         } catch (e) { alert('退款失败: ' + e.message); }
         closeRefundModal();
       }
@@ -536,8 +536,8 @@ const renderIndex = (ordersList: Order[], refundsList: Refund[]) => {
           return await res.json();
         } catch (e) {
           return { error: e.message };
+          }
         }
-      }
 
       function showApiResult(result) {
         document.getElementById('api-result').classList.remove('hidden');
@@ -576,15 +576,15 @@ const renderOrder = (order: Order) => {
         <div>
           <label class="text-sm text-muted-foreground">订单号</label>
           <p class="font-mono">${order.id}</p>
-        </div>
+      </div>
         <div>
           <label class="text-sm text-muted-foreground">商品描述</label>
           <p>${order.description}</p>
-        </div>
+          </div>
         <div>
           <label class="text-sm text-muted-foreground">支付金额</label>
           <p class="text-3xl font-bold">¥${(order.amount / 100).toFixed(2)}</p>
-        </div>
+          </div>
         <div>
           <label class="text-sm text-muted-foreground">订单状态</label>
           <p><span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
@@ -593,20 +593,20 @@ const renderOrder = (order: Order) => {
             order.status === 'refunded' ? 'bg-blue-100 text-blue-800' :
             'bg-slate-100 text-slate-800'
           }">${order.status.toUpperCase()}</span></p>
-        </div>
+          </div>
         ${order.transaction_id ? `
         <div>
           <label class="text-sm text-muted-foreground">微信交易号</label>
           <p class="font-mono text-sm">${order.transaction_id}</p>
-        </div>
+          </div>
         ` : ''}
         <div>
           <label class="text-sm text-muted-foreground">创建时间</label>
           <p class="text-muted-foreground">${order.createdAt.toLocaleString('zh-CN')}</p>
+          </div>
         </div>
-      </div>
 
-      ${qrCodeSection}
+        ${qrCodeSection}
 
       <div class="flex gap-4 mt-6">
         <a href="/" class="btn-primary">返回首页</a>
@@ -647,7 +647,7 @@ const renderOrder = (order: Order) => {
         const data = await res.json();
         if (res.ok) alert('退款成功！退款单号: ' + data.out_refund_no);
         else alert('退款失败: ' + data.error);
-        window.location.reload();
+              window.location.reload();
       }
 
       ${order.status === 'pending' ? `

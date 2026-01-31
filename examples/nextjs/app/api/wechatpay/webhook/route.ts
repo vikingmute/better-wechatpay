@@ -7,7 +7,7 @@ export async function POST(request: NextRequest) {
     const wechatPay = getWeChatPayClient();
 
     const result = await wechatPay.webhook.verify({
-      headers: Object.fromEntries(request.headers.entries()),
+      headers: Object.fromEntries(request.headers.entries()) as any,
       body,
     });
 

@@ -1,5 +1,5 @@
 import { createSign } from 'crypto';
-import type { WeChatPayConfig } from '../types/index';
+import type { WeChatPayConfig } from '../types/index.js';
 
 export class Signer {
   constructor(private config: WeChatPayConfig) {

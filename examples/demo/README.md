@@ -10,7 +10,7 @@ WECHAT_PAY_APP_ID=wx1234567890abcdef
 WECHAT_PAY_MCH_ID=1234567890
 WECHAT_PAY_API_KEY=your_32_character_api_key_here
 
-# 证书（PEM 格式，单行）
+# 证书（PEM 格式，多行/单行均可）
 WECHAT_PAY_PRIVATE_KEY=-----BEGIN PRIVATE KEY-----
 MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQ...
 -----END PRIVATE KEY-----
@@ -34,9 +34,9 @@ WEBHOOK_URL=http://localhost:3000/webhook/wechat
 WECHAT_PAY_DEBUG=true
 ```
 
-## 证书转换
+## 证书转换（可选）
 
-如果你有 PEM 证书文件，可以使用提供的脚本转换为单行格式：
+如果你的环境变量**不支持多行**，可以使用提供的脚本将 PEM 证书转换为单行格式：
 
 ```bash
 # 转换私钥和证书
@@ -60,6 +60,8 @@ awk '{printf "%s\\n", $0}' wechatpay_pub_key.pem
 ```
 
 然后复制输出的内容到 `.env` 文件对应的变量中。
+
+如果你的环境变量支持多行（例如本地 `.env`），可以直接拷贝证书内容，无需转换。
 
 ## 启动服务器
 
@@ -229,6 +231,7 @@ A:
 2. 进入"账户中心" → "API安全"
 3. 下载商户 API 证书
 4. 在"API安全"中获取微信支付公钥
+5. 在"API安全"中获取微信支付公钥 ID
 
 ### Q2: 为什么支付后页面不刷新？
 
@@ -250,7 +253,7 @@ WECHAT_PAY_BASE_URL=https://api.mch.weixin.qq.com/sandboxnew
 
 A: 
 1. 确认 PEM 格式正确（包含 BEGIN/END 标记）
-2. 确保证书是单行格式（使用提供的脚本转换）
+2. 确保证书内容完整（多行/单行均可；如果平台不支持多行再转换）
 3. 检查证书是否过期
 4. 验证私钥和证书是否匹配
 

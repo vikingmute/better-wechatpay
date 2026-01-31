@@ -1,4 +1,4 @@
-import { WeChatPayConfig, WeChatPayOptions } from '../types/index';
+import { WeChatPayConfig, WeChatPayOptions } from '../types/index.js';
 
 export function loadConfig(options: WeChatPayOptions | WeChatPayConfig): WeChatPayConfig {
   if ((options as WeChatPayOptions).configPath) {
