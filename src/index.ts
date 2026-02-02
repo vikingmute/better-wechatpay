@@ -27,10 +27,10 @@ export class WeChatPay {
     setDebugEnabled(this, config.debug || false);
 
     const signer = new Signer(config);
-    const verifier = new Verifier(config);
+    const verifier = new Verifier(config, this);
     const cryptoUtils = new CryptoUtils(config);
 
-    const httpClient = new HttpClient(config, signer, verifier);
+    const httpClient = new HttpClient(config, signer, verifier, this);
     const certManager = new CertificateManager(config, verifier, cryptoUtils, this);
 
     this.config = config;
@@ -64,11 +64,9 @@ export class WeChatPay {
     httpClient: HttpClient,
     config: any
   ): Promise<void> {
-    if (!config.paymentPublicKey || !config.publicKeyId) {
-      await certManager.fetchCertificates(() =>
-        httpClient.request<CertificateAPIResponse>('GET', '/v3/certificates', undefined, true)
-      );
-    }
+    await certManager.fetchCertificates(() =>
+      httpClient.request<CertificateAPIResponse>('GET', '/v3/certificates', undefined, true)
+    );
   }
 
   public static async initialize(options: any): Promise<WeChatPay> {

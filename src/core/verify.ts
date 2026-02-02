@@ -1,13 +1,14 @@
 import { createVerify } from 'crypto';
 import { X509Certificate } from '@peculiar/x509';
 import type { WeChatPayConfig } from '../types/index.js';
+import { logger } from './debug.js';
 
 export class Verifier {
   private publicKey: Buffer;
   private serialNo: string;
   private platformCertificates = new Map<string, string>();
 
-  constructor(private config: WeChatPayConfig) {
+  constructor(private config: WeChatPayConfig, private instance?: object) {
     this.publicKey = this.loadPublicKey();
     this.serialNo = this.getSerialNumber(this.publicKey);
   }
@@ -50,6 +51,7 @@ export class Verifier {
     const message = `${timestamp}\n${nonce}\n${body}\n`;
 
     if (this.config.paymentPublicKey && this.config.publicKeyId && serialNo === this.config.publicKeyId) {
+      logger.log(this.instance || {}, 'Verifying signature with payment public key', { serialNo });
       const paymentPublicKey = typeof this.config.paymentPublicKey === 'string'
         ? Buffer.from(this.config.paymentPublicKey)
         : this.config.paymentPublicKey;
@@ -69,6 +71,7 @@ export class Verifier {
     }
 
     try {
+      logger.log(this.instance || {}, 'Verifying signature with platform certificate', { serialNo });
       const verify = createVerify('RSA-SHA256');
       verify.update(message);
       const isValid = verify.verify(platformPublicKey, signature, 'base64');
