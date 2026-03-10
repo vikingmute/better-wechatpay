@@ -38,7 +38,7 @@ export class NativePayment extends BasePayment {
       goods_tag: params.goods_tag,
       support_fapiao: params.support_fapiao,
       amount: {
-        total: this.formatAmount(params.amount),
+        total: this.resolveAmountInFen(params.amount_fen, params.amount),
         currency: params.currency || 'CNY'
       },
       detail: params.detail ? {
@@ -88,8 +88,8 @@ export class NativePayment extends BasePayment {
         attach: order.attach,
         out_trade_no: order.out_trade_no,
         description: order.description,
-      amount: {
-          total_amount: this.formatAmount(order.amount.total_amount),
+        amount: {
+          total_amount: this.resolveAmountInFen(order.amount.total_amount_fen, order.amount.total_amount, 'sub_orders[].amount.total_amount_fen'),
           currency: order.amount.currency || 'CNY'
         },
         detail: order.detail,

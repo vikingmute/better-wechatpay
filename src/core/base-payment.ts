@@ -287,6 +287,24 @@ export abstract class BasePayment {
   }
 
   /**
+   * 解析金额（优先使用分；兼容元）
+   */
+  protected resolveAmountInFen(amount_fen: number | undefined, amount: number | undefined, fieldName = 'amount_fen'): number {
+    if (amount_fen !== undefined) {
+      if (!Number.isInteger(amount_fen) || amount_fen < 0) {
+        throw new Error(`${fieldName} must be a non-negative integer in fen`);
+      }
+      return amount_fen;
+    }
+
+    if (amount !== undefined) {
+      return this.formatAmount(amount);
+    }
+
+    throw new Error(`${fieldName} is required`);
+  }
+
+  /**
    * 递归移除对象中的 undefined 值
    */
   protected removeUndefined<T extends object>(obj: T): T {

@@ -22,7 +22,7 @@ ESM、TypeScript、全支付方式支持
 - ✅ 双签名验证（新公钥 + 平台证书）
 - ✅ 内置调试模式
 - ✅ 最小依赖（@peculiar/x509、ofetch）
-- ✅ 自动金额格式化（元转分）
+- ✅ 支持分单位直传（`amount_fen`），并兼容旧的元单位字段
 - ✅ 完善的测试覆盖
 - ✅ demo 服务 - 基于 hono 的轻量级 web 应用，用于本地测试和调试
 - ✅ 框架集成 - 提供 Next.js 和 Nuxt.js 的使用示例
@@ -56,7 +56,7 @@ const wechat = new WeChatPay({
 const payment = await wechat.native.create({
   out_trade_no: 'order-123',
   description: '会员订阅',
-  amount: 99.00  // 自动转换为分（9900）
+  amount_fen: 9900  // 推荐：直接使用分，避免浮点误差
 });
 
 console.log('二维码链接:', payment.code_url);

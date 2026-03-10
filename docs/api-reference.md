@@ -80,7 +80,8 @@ const result = await wechat.native.create(params: CreateNativePaymentParams);
 |-----|------|-----|------|
 | `out_trade_no` | `string` | ✅ | 商户订单号，6-32 位字符 |
 | `description` | `string` | ✅ | 商品描述 |
-| `amount` | `number` | ✅ | 订单金额，单位：元 |
+| `amount_fen` | `number` | ✅（推荐） | 订单金额，单位：分，必须为整数 |
+| `amount` | `number` | ⚠️ Deprecated | 订单金额，单位：元（兼容字段） |
 | `currency` | `string` | | 货币类型，默认 CNY |
 | `payer_client_ip` | `string` | | 用户终端 IP |
 | `time_expire` | `string` | | 过期时间，RFC 3339 格式 |
@@ -288,7 +289,8 @@ interface QueryCombineOrderResult {
     transaction_id?: string;
     out_trade_no: string;
     amount: {
-      total_amount: number;
+      total_amount_fen?: number;
+      total_amount?: number; // deprecated
       currency?: string;
     };
   }>;

@@ -26,7 +26,8 @@ Native 支付是指商户系统生成支付二维码，用户使用微信"扫一
 const payment = await wechat.native.create({
   out_trade_no: 'order-123',           // 商户订单号（必填，6-32位）
   description: '商品描述',              // 商品描述（必填）
-  amount: 99.00,                       // 金额，单位元（必填）
+  amount_fen: 9900,                    // 金额，单位分（推荐）
+  // amount: 99.00,                    // 已废弃：单位元，兼容保留
   currency: 'CNY',                     // 货币类型（可选，默认 CNY）
   payer_client_ip: '1.2.3.4',          // 用户 IP（可选）
   time_expire: '2026-12-31T23:59:59+08:00',  // 过期时间（可选）
@@ -241,7 +242,7 @@ SDK 自动将元转换为分，但要注意浮点数精度：
 
 ```typescript
 // 推荐：使用整数分或字符串
-const amount = 99.99;  // 会自动转换为 9999 分
+const amount_fen = 9999;  // 推荐直接使用分，避免浮点误差
 
 // 避免：复杂的浮点运算
 const badAmount = 0.1 + 0.2;  // 可能出现精度问题

@@ -62,7 +62,9 @@ export interface SettleInfo {
 export interface CreateNativePaymentParams {
   out_trade_no: string;
   description: string;
-  amount: number;
+  amount_fen?: number;
+  /** @deprecated 请改用 amount_fen（单位：分） */
+  amount?: number;
   currency?: string;
   payer_client_ip?: string;
   time_expire?: string;
@@ -84,7 +86,9 @@ export interface CreateNativePaymentResult {
 export interface CreateAppPaymentParams {
   out_trade_no: string;
   description: string;
-  amount: number;
+  amount_fen?: number;
+  /** @deprecated 请改用 amount_fen（单位：分） */
+  amount?: number;
   currency?: string;
   payer_client_ip?: string;
   time_expire?: string;
@@ -106,7 +110,9 @@ export interface CreateAppPaymentResult {
 export interface CreateJSAPIPaymentParams {
   out_trade_no: string;
   description: string;
-  amount: number;
+  amount_fen?: number;
+  /** @deprecated 请改用 amount_fen（单位：分） */
+  amount?: number;
   currency?: string;
   openid: string;  // 必填：用户在商户appid下的唯一标识
   payer_client_ip?: string;
@@ -144,7 +150,9 @@ export interface H5SceneInfo {
 export interface CreateH5PaymentParams {
   out_trade_no: string;
   description: string;
-  amount: number;
+  amount_fen?: number;
+  /** @deprecated 请改用 amount_fen（单位：分） */
+  amount?: number;
   currency?: string;
   payer_client_ip?: string;  // 便捷设置，会合并到 scene_info.payer_client_ip
   time_expire?: string;
@@ -165,7 +173,9 @@ export interface CreateH5PaymentResult {
 // ==================== 合单支付 ====================
 
 export interface CombineSubOrderAmount {
-  total_amount: number; // 单位：元（SDK 会自动转换为分）
+  total_amount_fen?: number; // 单位：分（推荐）
+  /** @deprecated 请改用 total_amount_fen（单位：分） */
+  total_amount?: number; // 单位：元（SDK 会自动转换为分）
   currency?: string;
 }
 

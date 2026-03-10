@@ -30,7 +30,7 @@ describe('H5Payment', () => {
     const result = await h5Payment.create({
       out_trade_no: 'order123',
       description: '测试支付',
-      amount: 99.00,
+      amount_fen: 9900,
       payer_client_ip: '1.2.3.4',
       h5_info: {
         type: 'Wap',
@@ -76,7 +76,7 @@ describe('H5Payment', () => {
           description: '子单商品',
           attach: 'attach_data',
           amount: {
-            total_amount: 10.01
+            total_amount_fen: 1001
           }
         }
       ]
