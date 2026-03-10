@@ -48,6 +48,8 @@ const wechat = new WeChatPay({
     // 可选但推荐：微信支付公钥验签（无有效期限制）
     paymentPublicKey: process.env.WECHAT_PAY_PAYMENT_PUBLIC_KEY,
     publicKeyId: process.env.WECHAT_PAY_PUBLIC_KEY_ID,
+    // 新商户仅使用微信支付公钥时可开启（默认 false）
+    skipFetchPlatformCertificates: true,
     notifyUrl: 'https://your-domain.com/webhook/wechat'
   }
 });

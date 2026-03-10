@@ -98,6 +98,8 @@ const wechat = new WeChatPay({
     // 可选但推荐：微信支付公钥验签（无有效期限制）
     paymentPublicKey: process.env.WECHAT_PAY_PAYMENT_PUBLIC_KEY,
     publicKeyId: process.env.WECHAT_PAY_PUBLIC_KEY_ID,
+    // 新商户如未开通平台证书接口，可手动跳过初始化拉取
+    skipFetchPlatformCertificates: true,
   }
 });
 ```
