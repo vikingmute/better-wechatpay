@@ -23,11 +23,17 @@ interface WeChatPayConfig {
   publicKey: Buffer | string;   // 商户证书 PEM（必填）
   paymentPublicKey?: Buffer | string;  // 微信支付公钥（可选）
   publicKeyId?: string;         // 公钥 ID（使用 paymentPublicKey 时必填）
+  forceFetchPlatformCertificates?: boolean; // 强制初始化时获取平台证书（默认 false）
   notifyUrl?: string;           // 回调通知地址
   baseUrl?: string;             // API 基础 URL（默认生产环境）
   debug?: boolean;              // 调试模式
 }
 ```
+
+> 初始化证书策略：
+> - 默认会拉取平台证书。
+> - 若同时提供 `paymentPublicKey` + `publicKeyId`，默认跳过拉取。
+> - 设置 `forceFetchPlatformCertificates: true` 可强制拉取。
 
 ### 属性
 

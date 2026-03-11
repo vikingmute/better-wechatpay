@@ -48,6 +48,9 @@ const wechat = new WeChatPay({
     // 可选但推荐：微信支付公钥验签（无有效期限制）
     paymentPublicKey: process.env.WECHAT_PAY_PAYMENT_PUBLIC_KEY,
     publicKeyId: process.env.WECHAT_PAY_PUBLIC_KEY_ID,
+    // 如果配置了 paymentPublicKey + publicKeyId，会默认跳过拉取平台证书
+    // 仅灰度兼容场景才需要强制拉取
+    forceFetchPlatformCertificates: false,
     notifyUrl: 'https://your-domain.com/webhook/wechat'
   }
 });
@@ -92,6 +95,12 @@ MIIEvgIBADAN...
 # 格式如：PUB_KEY_ID_0000000000000024101100397200000006
 WECHAT_PAY_PUBLIC_KEY_ID="PUB_KEY_ID_xxxx"
 ```
+
+## 初始化证书拉取行为
+
+- 默认情况下，SDK 会在初始化时拉取平台证书。
+- 当同时配置 `paymentPublicKey` 和 `publicKeyId` 时，SDK 会默认跳过拉取平台证书（适合新商户仅公钥模式）。
+- 如需灰度兼容（同时可能收到平台证书序列号签名），可设置 `forceFetchPlatformCertificates: true` 强制拉取。
 
 ## 支付方式
 
@@ -158,7 +167,7 @@ const payment = await wechat.h5.create({
 - [安全指南](docs/security.md)
 - [错误码](docs/error-codes.md)
 
-### 支付方式
+## 支付方式
 - [Native 支付（扫码支付）](docs/native-payment.md)
 - [APP 支付](docs/app-payment.md)
 - [JSAPI 支付](docs/jsapi-payment.md)

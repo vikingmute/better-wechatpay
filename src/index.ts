@@ -21,6 +21,8 @@ export class WeChatPay {
   public readonly h5: H5Payment;
   public readonly webhook: Webhook;
   private readonly httpClient: HttpClient;
+  private readonly certManager: CertificateManager;
+  private readonly initPromise: Promise<void>;
 
   constructor(options: any) {
     const config = loadConfig(options);
@@ -35,13 +37,14 @@ export class WeChatPay {
 
     this.config = config;
     this.httpClient = httpClient;
+    this.certManager = certManager;
     this.native = new NativePayment(httpClient, this);
     this.jsapi = new JSAPIPayment(httpClient, this);
     this.app = new AppPayment(httpClient, this);
     this.h5 = new H5Payment(httpClient, this);
     this.webhook = new Webhook(verifier, cryptoUtils, this);
 
-    this.initializeCertificates(certManager, httpClient, config);
+    this.initPromise = this.initializeCertificates(certManager, httpClient, config);
   }
 
   /**
@@ -64,6 +67,13 @@ export class WeChatPay {
     httpClient: HttpClient,
     config: any
   ): Promise<void> {
+    const shouldForceFetch = Boolean(config.forceFetchPlatformCertificates);
+    const shouldSkipByPublicKey = Boolean(config.paymentPublicKey && config.publicKeyId);
+
+    if (!shouldForceFetch && shouldSkipByPublicKey) {
+      return;
+    }
+
     await certManager.fetchCertificates(() =>
       httpClient.request<CertificateAPIResponse>('GET', '/v3/certificates', undefined, true)
     );
@@ -71,11 +81,7 @@ export class WeChatPay {
 
   public static async initialize(options: any): Promise<WeChatPay> {
     const instance = new WeChatPay(options);
-    await instance.initializeCertificates(
-      (instance as any).certManager,
-      (instance as any).httpClient,
-      instance.config
-    );
+    await instance.initPromise;
     return instance;
   }
 }
