@@ -28,6 +28,19 @@ describe('WeChatPay initialization', () => {
     expect(fetchCertificatesSpy).toHaveBeenCalledTimes(1);
   });
 
+
+  it('should only fetch platform certificates once when using static initialize', async () => {
+    const fetchCertificatesSpy = vi
+      .spyOn(CertificateManager.prototype, 'fetchCertificates')
+      .mockResolvedValue();
+
+    await WeChatPay.initialize({
+      config: createMockConfig()
+    });
+
+    expect(fetchCertificatesSpy).toHaveBeenCalledTimes(1);
+  });
+
   it('should skip fetching platform certificates when skipFetchPlatformCertificates is true', async () => {
     const fetchCertificatesSpy = vi
       .spyOn(CertificateManager.prototype, 'fetchCertificates')

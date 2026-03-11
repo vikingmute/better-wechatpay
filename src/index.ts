@@ -22,6 +22,7 @@ export class WeChatPay {
   public readonly webhook: Webhook;
   private readonly httpClient: HttpClient;
   private readonly certManager: CertificateManager;
+  private readonly initPromise: Promise<void>;
 
   constructor(options: any) {
     const config = loadConfig(options);
@@ -43,7 +44,7 @@ export class WeChatPay {
     this.h5 = new H5Payment(httpClient, this);
     this.webhook = new Webhook(verifier, cryptoUtils, this);
 
-    this.initializeCertificates(certManager, httpClient, config);
+    this.initPromise = this.initializeCertificates(certManager, httpClient, config);
   }
 
   /**
@@ -77,11 +78,7 @@ export class WeChatPay {
 
   public static async initialize(options: any): Promise<WeChatPay> {
     const instance = new WeChatPay(options);
-    await instance.initializeCertificates(
-      instance.certManager,
-      instance.httpClient,
-      instance.config
-    );
+    await instance.initPromise;
     return instance;
   }
 }
