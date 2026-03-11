@@ -147,8 +147,8 @@ export abstract class BasePayment {
       notify_url: params.notify_url,
       funds_account: params.funds_account,
       amount: {
-        refund: this.formatAmount(params.refund),
-        total: this.formatAmount(params.total),
+        refund: this.resolveAmountInFen(params.refund_fen, params.refund, 'refund_fen'),
+        total: this.resolveAmountInFen(params.total_fen, params.total, 'total_fen'),
         currency: params.currency || 'CNY',
         from: params.from
       },

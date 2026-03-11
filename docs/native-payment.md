@@ -135,8 +135,10 @@ await wechat.native.close('order-123');
 const refund = await wechat.native.refund({
   out_trade_no: 'order-123',      // 原订单号
   out_refund_no: 'refund-123',    // 退款单号（必填，需唯一）
-  refund: 99.00,                  // 退款金额（必填）
-  total: 99.00,                   // 原订单金额（必填）
+  refund_fen: 9900,               // 退款金额（必填，单位分，推荐）
+  total_fen: 9900,                // 原订单金额（必填，单位分，推荐）
+  // refund: 99.00,               // 已废弃：单位元，兼容保留
+  // total: 99.00,                // 已废弃：单位元，兼容保留
   reason: '商品售后',              // 退款原因（可选，不传则不显示）
   notify_url: 'https://...',      // 退款通知地址（可选）
   funds_account: 'AVAILABLE'      // 退款资金来源（可选）

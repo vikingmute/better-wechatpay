@@ -174,8 +174,10 @@ const result = await wechat.native.refund(params: RefundParams);
 | `reason` | `string` | | 退款原因 |
 | `notify_url` | `string` | | 退款结果回调地址 |
 | `funds_account` | `string` | | 退款资金来源 |
-| `refund` | `number` | ✅ | 退款金额，单位：元 |
-| `total` | `number` | ✅ | 原订单金额，单位：元 |
+| `refund_fen` | `number` | ✅（推荐） | 退款金额，单位：分，必须为整数 |
+| `total_fen` | `number` | ✅（推荐） | 原订单金额，单位：分，必须为整数 |
+| `refund` | `number` | ⚠️ Deprecated | 退款金额，单位：元（兼容字段） |
+| `total` | `number` | ⚠️ Deprecated | 原订单金额，单位：元（兼容字段） |
 | `currency` | `string` | | 货币类型 |
 
 #### 返回值

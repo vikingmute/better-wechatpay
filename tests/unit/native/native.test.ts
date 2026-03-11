@@ -246,8 +246,8 @@ describe('NativePayment', () => {
       const result = await nativePayment.refund({
         out_trade_no: 'order123',
         out_refund_no: 'refund_order123',
-        refund: 1.00,
-        total: 1.00
+        refund_fen: 100,
+        total_fen: 100
       });
 
       expect(result.refund_id).toBe('refund123');
@@ -262,6 +262,16 @@ describe('NativePayment', () => {
           })
         })
       );
+    });
+
+
+    it('refund_fen 非整数时应抛出错误', async () => {
+      await expect(nativePayment.refund({
+        out_trade_no: 'order123',
+        out_refund_no: 'refund_order123',
+        refund_fen: 10.5,
+        total_fen: 100
+      } as any)).rejects.toThrow('refund_fen must be a non-negative integer in fen');
     });
 
     it('应正确处理退款原因', async () => {

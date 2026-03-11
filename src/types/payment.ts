@@ -327,15 +327,31 @@ export interface CloseCombineOrderParams {
 
 // ==================== 退款 ====================
 
-export interface RefundParams {
+type RefundAmountInput =
+  | {
+      refund_fen: number;
+      total_fen: number;
+      /** @deprecated 请改用 refund_fen（单位：分） */
+      refund?: number;
+      /** @deprecated 请改用 total_fen（单位：分） */
+      total?: number;
+    }
+  | {
+      refund_fen?: number;
+      total_fen?: number;
+      /** @deprecated 请改用 refund_fen（单位：分） */
+      refund: number;
+      /** @deprecated 请改用 total_fen（单位：分） */
+      total: number;
+    };
+
+export type RefundParams = {
   transaction_id?: string;
   out_trade_no?: string;
   out_refund_no: string;
   reason?: string;
   notify_url?: string;
   funds_account?: 'AVAILABLE' | 'UNSETTLED';
-  refund: number;
-  total: number;
   currency?: string;
   from?: Array<{ account: 'AVAILABLE' | 'UNAVAILABLE'; amount: number }>;
   goods_detail?: Array<{
@@ -346,7 +362,7 @@ export interface RefundParams {
     refund_amount: number;
     refund_quantity: number;
   }>;
-}
+} & RefundAmountInput;
 
 export interface RefundResult {
   refund_id: string;
