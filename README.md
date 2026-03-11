@@ -167,12 +167,6 @@ const payment = await wechat.h5.create({
 - [安全指南](docs/security.md)
 - [错误码](docs/error-codes.md)
 
-### 初始化证书拉取行为
-
-- 默认情况下，SDK 会在初始化时拉取平台证书。
-- 当同时配置 `paymentPublicKey` 和 `publicKeyId` 时，SDK 会默认跳过拉取平台证书（适合新商户仅公钥模式）。
-- 如需灰度兼容（同时可能收到平台证书序列号签名），可设置 `forceFetchPlatformCertificates: true` 强制拉取。
-
 ## 支付方式
 - [Native 支付（扫码支付）](docs/native-payment.md)
 - [APP 支付](docs/app-payment.md)
