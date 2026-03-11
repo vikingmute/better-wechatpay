@@ -86,7 +86,8 @@ const result = await wechat.native.create(params: CreateNativePaymentParams);
 |-----|------|-----|------|
 | `out_trade_no` | `string` | ✅ | 商户订单号，6-32 位字符 |
 | `description` | `string` | ✅ | 商品描述 |
-| `amount` | `number` | ✅ | 订单金额，单位：元 |
+| `amount_cents` | `number` | ✅（推荐） | 订单金额，单位：分，必须为整数 |
+| `amount` | `number` | ⚠️ Deprecated | 订单金额，单位：元（兼容字段） |
 | `currency` | `string` | | 货币类型，默认 CNY |
 | `payer_client_ip` | `string` | | 用户终端 IP |
 | `time_expire` | `string` | | 过期时间，RFC 3339 格式 |
@@ -179,8 +180,10 @@ const result = await wechat.native.refund(params: RefundParams);
 | `reason` | `string` | | 退款原因 |
 | `notify_url` | `string` | | 退款结果回调地址 |
 | `funds_account` | `string` | | 退款资金来源 |
-| `refund` | `number` | ✅ | 退款金额，单位：元 |
-| `total` | `number` | ✅ | 原订单金额，单位：元 |
+| `refund_cents` | `number` | ✅（推荐） | 退款金额，单位：分，必须为整数 |
+| `total_cents` | `number` | ✅（推荐） | 原订单金额，单位：分，必须为整数 |
+| `refund` | `number` | ⚠️ Deprecated | 退款金额，单位：元（兼容字段） |
+| `total` | `number` | ⚠️ Deprecated | 原订单金额，单位：元（兼容字段） |
 | `currency` | `string` | | 货币类型 |
 
 #### 返回值
@@ -294,7 +297,8 @@ interface QueryCombineOrderResult {
     transaction_id?: string;
     out_trade_no: string;
     amount: {
-      total_amount: number;
+      total_amount_cents?: number;
+      total_amount?: number; // deprecated
       currency?: string;
     };
   }>;

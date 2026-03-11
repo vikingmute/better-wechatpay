@@ -46,7 +46,7 @@ export class JSAPIPayment extends BasePayment {
       goods_tag: params.goods_tag,
       support_fapiao: params.support_fapiao,
       amount: {
-        total: this.formatAmount(params.amount),
+        total: this.resolveAmountInCents(params.amount_cents, params.amount),
         currency: params.currency || 'CNY'
       },
       payer: {
@@ -102,7 +102,7 @@ export class JSAPIPayment extends BasePayment {
         out_trade_no: order.out_trade_no,
         description: order.description,
         amount: {
-          total_amount: this.formatAmount(order.amount.total_amount),
+          total_amount: this.resolveAmountInCents(order.amount.total_amount_cents, order.amount.total_amount, 'sub_orders[].amount.total_amount_cents'),
           currency: order.amount.currency || 'CNY'
         },
         detail: order.detail,
@@ -150,7 +150,7 @@ export class JSAPIPayment extends BasePayment {
         out_trade_no: order.out_trade_no,
         description: order.description,
         amount: {
-          total_amount: this.formatAmount(order.amount.total_amount),
+          total_amount: this.resolveAmountInCents(order.amount.total_amount_cents, order.amount.total_amount, 'sub_orders[].amount.total_amount_cents'),
           currency: order.amount.currency || 'CNY'
         },
         detail: order.detail,

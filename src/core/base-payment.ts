@@ -147,8 +147,8 @@ export abstract class BasePayment {
       notify_url: params.notify_url,
       funds_account: params.funds_account,
       amount: {
-        refund: this.formatAmount(params.refund),
-        total: this.formatAmount(params.total),
+        refund: this.resolveAmountInCents(params.refund_cents, params.refund, 'refund_cents'),
+        total: this.resolveAmountInCents(params.total_cents, params.total, 'total_cents'),
         currency: params.currency || 'CNY',
         from: params.from
       },
@@ -284,6 +284,24 @@ export abstract class BasePayment {
    */
   protected formatAmount(amount: number): number {
     return Math.round(amount * 100);
+  }
+
+  /**
+   * 解析金额（优先使用分；兼容元）
+   */
+  protected resolveAmountInCents(amount_cents: number | undefined, amount: number | undefined, fieldName = 'amount_cents'): number {
+    if (amount_cents !== undefined) {
+      if (!Number.isInteger(amount_cents) || amount_cents < 0) {
+        throw new Error(`${fieldName} must be a non-negative integer in cents`);
+      }
+      return amount_cents;
+    }
+
+    if (amount !== undefined) {
+      return this.formatAmount(amount);
+    }
+
+    throw new Error(`${fieldName} is required`);
   }
 
   /**

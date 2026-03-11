@@ -30,7 +30,7 @@ describe('JSAPIPayment', () => {
     const result = await jsapiPayment.create({
       out_trade_no: 'order123',
       description: '测试支付',
-      amount: 99.00,
+      amount_cents: 9900,
       openid: 'openid123',
       payer_client_ip: '1.2.3.4'
     });
@@ -63,7 +63,7 @@ describe('JSAPIPayment', () => {
           description: '子单商品',
           attach: 'attach_data',
           amount: {
-            total_amount: 10.01
+            total_amount_cents: 1001
           }
         }
       ]
@@ -101,7 +101,7 @@ describe('JSAPIPayment', () => {
           description: '子单商品',
           attach: 'attach_data',
           amount: {
-            total_amount: 1.23
+            total_amount_cents: 123
           }
         }
       ]

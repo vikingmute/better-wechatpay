@@ -27,7 +27,7 @@ describe('NativePayment', () => {
       const result = await nativePayment.create({
         out_trade_no: 'order123',
         description: '测试支付',
-        amount: 99.00,
+        amount_cents: 9900,
         payer_client_ip: '1.2.3.4'
       });
 
@@ -87,6 +87,36 @@ describe('NativePayment', () => {
           time_expire: '2024-12-31T23:59:59+08:00'
         })
       );
+    });
+
+
+    it('应优先使用 amount_cents（分）并跳过元转换', async () => {
+      mockClient.request.mockResolvedValue({ code_url: 'weixin://test' });
+
+      await nativePayment.create({
+        out_trade_no: 'order123',
+        description: '测试',
+        amount_cents: 1001,
+        amount: 10.01
+      });
+
+      expect(mockClient.request).toHaveBeenCalledWith(
+        'POST',
+        '/v3/pay/transactions/native',
+        expect.objectContaining({
+          amount: expect.objectContaining({
+            total: 1001
+          })
+        })
+      );
+    });
+
+    it('amount_cents 非整数时应抛出错误', async () => {
+      await expect(nativePayment.create({
+        out_trade_no: 'order123',
+        description: '测试',
+        amount_cents: 10.5
+      } as any)).rejects.toThrow('amount_cents must be a non-negative integer in cents');
     });
 
     it('应正确处理 detail 和 scene_info', async () => {
@@ -216,8 +246,8 @@ describe('NativePayment', () => {
       const result = await nativePayment.refund({
         out_trade_no: 'order123',
         out_refund_no: 'refund_order123',
-        refund: 1.00,
-        total: 1.00
+        refund_cents: 100,
+        total_cents: 100
       });
 
       expect(result.refund_id).toBe('refund123');
@@ -232,6 +262,16 @@ describe('NativePayment', () => {
           })
         })
       );
+    });
+
+
+    it('refund_cents 非整数时应抛出错误', async () => {
+      await expect(nativePayment.refund({
+        out_trade_no: 'order123',
+        out_refund_no: 'refund_order123',
+        refund_cents: 10.5,
+        total_cents: 100
+      } as any)).rejects.toThrow('refund_cents must be a non-negative integer in cents');
     });
 
     it('应正确处理退款原因', async () => {
