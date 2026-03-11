@@ -59,12 +59,13 @@ export interface SettleInfo {
 
 // ==================== Native 支付 ====================
 
-export interface CreateNativePaymentParams {
+type NativeAmountInput =
+  | { amount_fen: number; /** @deprecated 请改用 amount_fen（单位：分） */ amount?: number }
+  | { amount_fen?: number; /** @deprecated 请改用 amount_fen（单位：分） */ amount: number };
+
+export type CreateNativePaymentParams = {
   out_trade_no: string;
   description: string;
-  amount_fen?: number;
-  /** @deprecated 请改用 amount_fen（单位：分） */
-  amount?: number;
   currency?: string;
   payer_client_ip?: string;
   time_expire?: string;
@@ -74,7 +75,7 @@ export interface CreateNativePaymentParams {
   detail?: OrderDetail;
   scene_info?: SceneInfo;
   settle_info?: SettleInfo;
-}
+} & NativeAmountInput;
 
 export interface CreateNativePaymentResult {
   code_url: string;
@@ -83,12 +84,13 @@ export interface CreateNativePaymentResult {
 
 // ==================== APP 支付 ====================
 
-export interface CreateAppPaymentParams {
+type AppAmountInput =
+  | { amount_fen: number; /** @deprecated 请改用 amount_fen（单位：分） */ amount?: number }
+  | { amount_fen?: number; /** @deprecated 请改用 amount_fen（单位：分） */ amount: number };
+
+export type CreateAppPaymentParams = {
   out_trade_no: string;
   description: string;
-  amount_fen?: number;
-  /** @deprecated 请改用 amount_fen（单位：分） */
-  amount?: number;
   currency?: string;
   payer_client_ip?: string;
   time_expire?: string;
@@ -98,7 +100,7 @@ export interface CreateAppPaymentParams {
   detail?: OrderDetail;
   scene_info?: SceneInfo;
   settle_info?: SettleInfo;
-}
+} & AppAmountInput;
 
 export interface CreateAppPaymentResult {
   prepay_id: string;
@@ -107,12 +109,13 @@ export interface CreateAppPaymentResult {
 
 // ==================== JSAPI / 小程序支付 ====================
 
-export interface CreateJSAPIPaymentParams {
+type JSAPIAmountInput =
+  | { amount_fen: number; /** @deprecated 请改用 amount_fen（单位：分） */ amount?: number }
+  | { amount_fen?: number; /** @deprecated 请改用 amount_fen（单位：分） */ amount: number };
+
+export type CreateJSAPIPaymentParams = {
   out_trade_no: string;
   description: string;
-  amount_fen?: number;
-  /** @deprecated 请改用 amount_fen（单位：分） */
-  amount?: number;
   currency?: string;
   openid: string;  // 必填：用户在商户appid下的唯一标识
   payer_client_ip?: string;
@@ -123,7 +126,7 @@ export interface CreateJSAPIPaymentParams {
   detail?: OrderDetail;
   scene_info?: SceneInfo;
   settle_info?: SettleInfo;
-}
+} & JSAPIAmountInput;
 
 export interface CreateJSAPIPaymentResult {
   prepay_id: string;
@@ -147,12 +150,13 @@ export interface H5SceneInfo {
   h5_info: H5Info;  // H5支付必填
 }
 
-export interface CreateH5PaymentParams {
+type H5AmountInput =
+  | { amount_fen: number; /** @deprecated 请改用 amount_fen（单位：分） */ amount?: number }
+  | { amount_fen?: number; /** @deprecated 请改用 amount_fen（单位：分） */ amount: number };
+
+export type CreateH5PaymentParams = {
   out_trade_no: string;
   description: string;
-  amount_fen?: number;
-  /** @deprecated 请改用 amount_fen（单位：分） */
-  amount?: number;
   currency?: string;
   payer_client_ip?: string;  // 便捷设置，会合并到 scene_info.payer_client_ip
   time_expire?: string;
@@ -163,7 +167,7 @@ export interface CreateH5PaymentParams {
   scene_info?: H5SceneInfo;  // H5支付场景信息（包含 h5_info）
   settle_info?: SettleInfo;
   h5_info?: H5Info;  // 便捷设置，会合并到 scene_info.h5_info
-}
+} & H5AmountInput;
 
 export interface CreateH5PaymentResult {
   h5_url: string;
@@ -172,12 +176,19 @@ export interface CreateH5PaymentResult {
 
 // ==================== 合单支付 ====================
 
-export interface CombineSubOrderAmount {
-  total_amount_fen?: number; // 单位：分（推荐）
-  /** @deprecated 请改用 total_amount_fen（单位：分） */
-  total_amount?: number; // 单位：元（SDK 会自动转换为分）
-  currency?: string;
-}
+export type CombineSubOrderAmount =
+  | {
+      total_amount_fen: number; // 单位：分（推荐）
+      /** @deprecated 请改用 total_amount_fen（单位：分） */
+      total_amount?: number; // 单位：元（SDK 会自动转换为分）
+      currency?: string;
+    }
+  | {
+      total_amount_fen?: number; // 单位：分（推荐）
+      /** @deprecated 请改用 total_amount_fen（单位：分） */
+      total_amount: number; // 单位：元（SDK 会自动转换为分）
+      currency?: string;
+    };
 
 export interface CombineSubOrder {
   mchid: string;
