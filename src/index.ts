@@ -67,7 +67,11 @@ export class WeChatPay {
     httpClient: HttpClient,
     config: any
   ): Promise<void> {
-    if (config.skipFetchPlatformCertificates) {
+    const shouldForceFetch = Boolean(config.forceFetchPlatformCertificates);
+    const shouldSkipByOption = Boolean(config.skipFetchPlatformCertificates);
+    const shouldSkipByPublicKey = Boolean(config.paymentPublicKey && config.publicKeyId);
+
+    if (!shouldForceFetch && (shouldSkipByOption || shouldSkipByPublicKey)) {
       return;
     }
 

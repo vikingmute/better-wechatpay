@@ -98,11 +98,17 @@ const wechat = new WeChatPay({
     // 可选但推荐：微信支付公钥验签（无有效期限制）
     paymentPublicKey: process.env.WECHAT_PAY_PAYMENT_PUBLIC_KEY,
     publicKeyId: process.env.WECHAT_PAY_PUBLIC_KEY_ID,
-    // 新商户如未开通平台证书接口，可手动跳过初始化拉取
-    skipFetchPlatformCertificates: true,
+    // 配置了 paymentPublicKey + publicKeyId 后会默认跳过平台证书拉取
+    // 灰度兼容场景可强制拉取
+    forceFetchPlatformCertificates: false,
   }
 });
 ```
+
+
+> 💡 提示：当你同时配置 `paymentPublicKey` 和 `publicKeyId` 时，SDK 默认不请求 `/v3/certificates`。
+>
+> 只有在灰度阶段需要同时兼容“平台证书签名 + 公钥签名”时，才建议设置 `forceFetchPlatformCertificates: true`。
 
 ## 第五步：创建你的第一笔支付
 

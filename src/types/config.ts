@@ -7,6 +7,7 @@ export interface WeChatPayConfig {
   paymentPublicKey?: Buffer | string;
   publicKeyId?: string;
   skipFetchPlatformCertificates?: boolean;
+  forceFetchPlatformCertificates?: boolean;
   notifyUrl?: string;
   baseUrl?: string;
   debug?: boolean;
