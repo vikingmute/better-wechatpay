@@ -40,21 +40,6 @@ describe('WeChatPay initialization', () => {
     expect(fetchCertificatesSpy).toHaveBeenCalledTimes(1);
   });
 
-  it('should skip fetching platform certificates when skipFetchPlatformCertificates is true', async () => {
-    const fetchCertificatesSpy = vi
-      .spyOn(CertificateManager.prototype, 'fetchCertificates')
-      .mockResolvedValue();
-
-    new WeChatPay({
-      config: createMockConfig({
-        skipFetchPlatformCertificates: true
-      })
-    });
-
-    await new Promise((resolve) => setTimeout(resolve, 0));
-    expect(fetchCertificatesSpy).not.toHaveBeenCalled();
-  });
-
   it('should skip fetching by default when paymentPublicKey and publicKeyId are provided', async () => {
     const fetchCertificatesSpy = vi
       .spyOn(CertificateManager.prototype, 'fetchCertificates')

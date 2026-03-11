@@ -68,10 +68,9 @@ export class WeChatPay {
     config: any
   ): Promise<void> {
     const shouldForceFetch = Boolean(config.forceFetchPlatformCertificates);
-    const shouldSkipByOption = Boolean(config.skipFetchPlatformCertificates);
     const shouldSkipByPublicKey = Boolean(config.paymentPublicKey && config.publicKeyId);
 
-    if (!shouldForceFetch && (shouldSkipByOption || shouldSkipByPublicKey)) {
+    if (!shouldForceFetch && shouldSkipByPublicKey) {
       return;
     }
 
