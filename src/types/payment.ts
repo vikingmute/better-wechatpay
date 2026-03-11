@@ -60,8 +60,8 @@ export interface SettleInfo {
 // ==================== Native 支付 ====================
 
 type NativeAmountInput =
-  | { amount_fen: number; /** @deprecated 请改用 amount_fen（单位：分） */ amount?: number }
-  | { amount_fen?: number; /** @deprecated 请改用 amount_fen（单位：分） */ amount: number };
+  | { amount_cents: number; /** @deprecated 请改用 amount_cents（单位：分） */ amount?: number }
+  | { amount_cents?: number; /** @deprecated 请改用 amount_cents（单位：分） */ amount: number };
 
 export type CreateNativePaymentParams = {
   out_trade_no: string;
@@ -85,8 +85,8 @@ export interface CreateNativePaymentResult {
 // ==================== APP 支付 ====================
 
 type AppAmountInput =
-  | { amount_fen: number; /** @deprecated 请改用 amount_fen（单位：分） */ amount?: number }
-  | { amount_fen?: number; /** @deprecated 请改用 amount_fen（单位：分） */ amount: number };
+  | { amount_cents: number; /** @deprecated 请改用 amount_cents（单位：分） */ amount?: number }
+  | { amount_cents?: number; /** @deprecated 请改用 amount_cents（单位：分） */ amount: number };
 
 export type CreateAppPaymentParams = {
   out_trade_no: string;
@@ -110,8 +110,8 @@ export interface CreateAppPaymentResult {
 // ==================== JSAPI / 小程序支付 ====================
 
 type JSAPIAmountInput =
-  | { amount_fen: number; /** @deprecated 请改用 amount_fen（单位：分） */ amount?: number }
-  | { amount_fen?: number; /** @deprecated 请改用 amount_fen（单位：分） */ amount: number };
+  | { amount_cents: number; /** @deprecated 请改用 amount_cents（单位：分） */ amount?: number }
+  | { amount_cents?: number; /** @deprecated 请改用 amount_cents（单位：分） */ amount: number };
 
 export type CreateJSAPIPaymentParams = {
   out_trade_no: string;
@@ -151,8 +151,8 @@ export interface H5SceneInfo {
 }
 
 type H5AmountInput =
-  | { amount_fen: number; /** @deprecated 请改用 amount_fen（单位：分） */ amount?: number }
-  | { amount_fen?: number; /** @deprecated 请改用 amount_fen（单位：分） */ amount: number };
+  | { amount_cents: number; /** @deprecated 请改用 amount_cents（单位：分） */ amount?: number }
+  | { amount_cents?: number; /** @deprecated 请改用 amount_cents（单位：分） */ amount: number };
 
 export type CreateH5PaymentParams = {
   out_trade_no: string;
@@ -178,14 +178,14 @@ export interface CreateH5PaymentResult {
 
 export type CombineSubOrderAmount =
   | {
-      total_amount_fen: number; // 单位：分（推荐）
-      /** @deprecated 请改用 total_amount_fen（单位：分） */
+      total_amount_cents: number; // 单位：分（推荐）
+      /** @deprecated 请改用 total_amount_cents（单位：分） */
       total_amount?: number; // 单位：元（SDK 会自动转换为分）
       currency?: string;
     }
   | {
-      total_amount_fen?: number; // 单位：分（推荐）
-      /** @deprecated 请改用 total_amount_fen（单位：分） */
+      total_amount_cents?: number; // 单位：分（推荐）
+      /** @deprecated 请改用 total_amount_cents（单位：分） */
       total_amount: number; // 单位：元（SDK 会自动转换为分）
       currency?: string;
     };
@@ -329,19 +329,19 @@ export interface CloseCombineOrderParams {
 
 type RefundAmountInput =
   | {
-      refund_fen: number;
-      total_fen: number;
-      /** @deprecated 请改用 refund_fen（单位：分） */
+      refund_cents: number;
+      total_cents: number;
+      /** @deprecated 请改用 refund_cents（单位：分） */
       refund?: number;
-      /** @deprecated 请改用 total_fen（单位：分） */
+      /** @deprecated 请改用 total_cents（单位：分） */
       total?: number;
     }
   | {
-      refund_fen?: number;
-      total_fen?: number;
-      /** @deprecated 请改用 refund_fen（单位：分） */
+      refund_cents?: number;
+      total_cents?: number;
+      /** @deprecated 请改用 refund_cents（单位：分） */
       refund: number;
-      /** @deprecated 请改用 total_fen（单位：分） */
+      /** @deprecated 请改用 total_cents（单位：分） */
       total: number;
     };
 

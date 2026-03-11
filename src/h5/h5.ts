@@ -48,7 +48,7 @@ export class H5Payment extends BasePayment {
       goods_tag: params.goods_tag,
       support_fapiao: params.support_fapiao,
       amount: {
-        total: this.resolveAmountInFen(params.amount_fen, params.amount),
+        total: this.resolveAmountInCents(params.amount_cents, params.amount),
         currency: params.currency || 'CNY'
       },
       detail: params.detail ? {
@@ -123,7 +123,7 @@ export class H5Payment extends BasePayment {
         out_trade_no: order.out_trade_no,
         description: order.description,
         amount: {
-          total_amount: this.resolveAmountInFen(order.amount.total_amount_fen, order.amount.total_amount, 'sub_orders[].amount.total_amount_fen'),
+          total_amount: this.resolveAmountInCents(order.amount.total_amount_cents, order.amount.total_amount, 'sub_orders[].amount.total_amount_cents'),
           currency: order.amount.currency || 'CNY'
         },
         detail: order.detail,
