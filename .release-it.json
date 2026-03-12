@@ -1,0 +1,22 @@
+{
+  "git": {
+    "tagName": "v${version}",
+    "commitMessage": "chore: release v${version}",
+    "requireCleanWorkingDir": true,
+    "requireBranch": "main",
+    "push": true
+  },
+  "github": {
+    "release": true,
+    "releaseName": "v${version}",
+    "autoGenerate": true
+  },
+  "npm": {
+    "publish": false
+  },
+  "hooks": {
+    "before:init": "npm run typecheck",
+    "after:bump": "npm run build",
+    "after:release": "echo \"Release v${version} completed\""
+  }
+}

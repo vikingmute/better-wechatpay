@@ -269,6 +269,13 @@ const renderIndex = (ordersList: Order[], refundsList: Refund[]) => {
             <label class="text-sm font-medium">商品描述</label>
             <input type="text" id="description" value="测试商品" class="input mt-1" />
           </div>
+          <div>
+            <label class="text-sm font-medium">参数类型</label>
+            <label class="flex items-center gap-2 mt-2 text-sm">
+              <input type="checkbox" id="use_amount_cents" />
+              使用 amount_cents（分）
+            </label>
+          </div>
           <div class="flex items-end">
             <button onclick="createPayment()" class="btn-primary w-full">创建支付</button>
           </div>
@@ -398,6 +405,13 @@ const renderIndex = (ordersList: Order[], refundsList: Refund[]) => {
             <input type="number" id="refund_amount" min="0.01" step="0.01" class="input mt-1" />
           </div>
           <div>
+            <label class="text-sm font-medium">参数类型</label>
+            <label class="flex items-center gap-2 mt-2 text-sm">
+              <input type="checkbox" id="use_refund_cents" />
+              使用 refund_cents / total_cents（分）
+            </label>
+          </div>
+          <div>
             <label class="text-sm font-medium">退款原因</label>
             <input type="text" id="refund_reason" placeholder="可选，如：商品售后退款" class="input mt-1" />
           </div>
@@ -426,9 +440,15 @@ const renderIndex = (ordersList: Order[], refundsList: Refund[]) => {
       function createPayment() {
         const amount = parseFloat(document.getElementById('amount').value);
         const description = document.getElementById('description').value;
+        const useCents = document.getElementById('use_amount_cents').checked;
         if (amount < 0.01) { alert('金额不能小于 0.01 元'); return; }
         if (!description) { alert('请输入商品描述'); return; }
-        window.location.href = '/create?amount=' + amount + '&description=' + encodeURIComponent(description);
+        const params = new URLSearchParams({
+          amount: amount.toString(),
+          description
+        });
+        if (useCents) params.set('use_cents', '1');
+        window.location.href = '/create?' + params.toString();
       }
 
       async function closeOrder(orderId) {
@@ -459,12 +479,13 @@ const renderIndex = (ordersList: Order[], refundsList: Refund[]) => {
         const orderId = document.getElementById('refund_order_id').value;
         const amount = parseFloat(document.getElementById('refund_amount').value);
         const reason = document.getElementById('refund_reason').value;
+        const useCents = document.getElementById('use_refund_cents').checked;
         
         try {
           const res = await fetch('/api/refund', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ out_trade_no: orderId, amount, reason })
+            body: JSON.stringify({ out_trade_no: orderId, amount, reason, use_cents: useCents })
           });
           const data = await res.json();
           if (res.ok) {
@@ -638,11 +659,12 @@ const renderOrder = (order: Order) => {
       async function refundOrder() {
         const amount = prompt('请输入退款金额（元）:', '${(order.amount / 100).toFixed(2)}');
         if (!amount) return;
+        const useCents = confirm('使用 refund_cents / total_cents（分）发起退款？');
         const reason = prompt('请输入退款原因（可选）:');
         const res = await fetch('/api/refund', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ out_trade_no: '${order.id}', amount: parseFloat(amount), reason })
+          body: JSON.stringify({ out_trade_no: '${order.id}', amount: parseFloat(amount), reason, use_cents: useCents })
         });
         const data = await res.json();
         if (res.ok) alert('退款成功！退款单号: ' + data.out_refund_no);
@@ -717,16 +739,18 @@ app.get('/', (c) => {
 app.get('/create', async (c) => {
   const amount = parseFloat(c.req.query('amount') || '0');
   const description = c.req.query('description') || '测试商品';
+  const useCents = c.req.query('use_cents') === '1';
 
-  console.log(`\n📝 创建支付: ${description}, 金额: ¥${amount}`);
+  console.log(`\n📝 创建支付: ${description}, 金额: ¥${amount} (${useCents ? 'amount_cents' : 'amount'})`);
 
   try {
     const orderId = generateOrderId();
-    const payment = await wechat.native.create({
-      out_trade_no: orderId,
-      description,
-      amount
-    });
+    const amount_cents = Math.round(amount * 100);
+    const payment = await wechat.native.create(
+      useCents
+        ? { out_trade_no: orderId, description, amount_cents }
+        : { out_trade_no: orderId, description, amount }
+    );
 
     console.log(`✅ 支付创建成功: ${payment.out_trade_no}`);
     console.log(`   二维码URL: ${payment.code_url}`);
@@ -830,9 +854,10 @@ app.post('/api/close/:id', async (c) => {
 // 申请退款
 app.post('/api/refund', async (c) => {
   const body = await c.req.json();
-  const { out_trade_no, amount, reason } = body;
+  const { out_trade_no, amount, reason, use_cents } = body;
+  const useCents = use_cents === true;
 
-  console.log(`\n💸 申请退款: 订单 ${out_trade_no}, 金额 ¥${amount}`);
+  console.log(`\n💸 申请退款: 订单 ${out_trade_no}, 金额 ¥${amount} (${useCents ? 'refund_cents/total_cents' : 'refund/total'})`);
 
   try {
     const order = orders.get(out_trade_no);
@@ -841,13 +866,24 @@ app.post('/api/refund', async (c) => {
     }
 
     const out_refund_no = generateRefundNo();
-    const result = await wechat.native.refund({
-      out_trade_no,
-      out_refund_no,
-      refund: amount,
-      total: order.amount / 100,  // 转换回元
-      reason: reason || undefined  // 空字符串转为 undefined，避免微信 API 报错
-    });
+    const refund_cents = Math.round(amount * 100);
+    const result = await wechat.native.refund(
+      useCents
+        ? {
+            out_trade_no,
+            out_refund_no,
+            refund_cents,
+            total_cents: order.amount,
+            reason: reason || undefined
+          }
+        : {
+            out_trade_no,
+            out_refund_no,
+            refund: amount,
+            total: order.amount / 100, // 转换回元
+            reason: reason || undefined
+          }
+    );
 
     console.log(`✅ 退款申请成功: ${result.out_refund_no}`);
 
